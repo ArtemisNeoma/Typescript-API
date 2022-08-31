@@ -1,3 +1,4 @@
+import { tokens } from '@di/tokens';
 import { IRepositoryUser } from '@interfaces/domain/user/repository';
 import {
   IDatabaseObject,
@@ -8,7 +9,7 @@ import { inject, injectable } from 'tsyringe';
 export default class ListUserService implements IListUserService {
   readingError: Error = new Error('Failed to readAll database');
   constructor(
-    @inject('UserRepository')
+    @inject(tokens.UserRepository)
     private repository: IRepositoryUser,
   ) {}
 

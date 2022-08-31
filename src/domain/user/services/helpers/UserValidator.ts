@@ -2,6 +2,7 @@ import { IVariableDatabase } from '@interfaces/domain/repository';
 import { IUserValidator } from '@interfaces/domain/user/services/validation';
 import { IUser } from '@interfaces/domain/user/repository';
 import { inject, injectable } from 'tsyringe';
+import { tokens } from '@di/tokens';
 
 @injectable()
 export default class UserValidator implements IUserValidator {
@@ -13,11 +14,11 @@ export default class UserValidator implements IUserValidator {
     database: IVariableDatabase,
   ) => boolean;
   constructor(
-    @inject('getCep')
+    @inject(tokens.getCep)
     getCep: (value: string) => Promise<boolean>,
-    @inject('isCpfValid')
+    @inject(tokens.isCpfValid)
     isCpfValid: (cpf: string) => boolean,
-    @inject('checkUnique')
+    @inject(tokens.checkUnique)
     checkUnique: (
       value: string,
       fieldName: keyof IUser,

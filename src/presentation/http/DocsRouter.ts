@@ -1,3 +1,4 @@
+import { tokens } from '@di/tokens';
 import { Router } from 'express';
 import { inject, injectable } from 'tsyringe';
 import { DocsController } from './controllers/DocsController';
@@ -5,7 +6,7 @@ import { DocsController } from './controllers/DocsController';
 @injectable()
 export default class DocsRouter {
   constructor(
-    @inject('FrameworkRouter') private router: Router,
+    @inject(tokens.FrameworkRouter) private router: Router,
     @inject('DocsController') private docsController: DocsController,
   ) {}
 

@@ -1,3 +1,4 @@
+import { tokens } from '@di/tokens';
 import { ControllerAdapterType, MiddlewareArray } from '@interfaces/middleware';
 import { IEndPointsController } from '@interfaces/presentation/controller';
 import { Router } from 'express';
@@ -6,13 +7,14 @@ import { inject, injectable } from 'tsyringe';
 @injectable()
 export default class UserRouter {
   constructor(
-    @inject('FrameworkRouter') private router: Router,
-    @inject('CreateUserController')
+    @inject(tokens.FrameworkRouter) private router: Router,
+    @inject(tokens.CreateUserController)
     private createUserController: IEndPointsController,
-    @inject('ListUserController')
+    @inject(tokens.ListUserController)
     private listUserController: IEndPointsController,
-    @inject('CreateUserMiddlewares') private createMiddlewares: MiddlewareArray,
-    @inject('ControllerAdapter')
+    @inject(tokens.CreateUserMiddlewares)
+    private createMiddlewares: MiddlewareArray,
+    @inject(tokens.ControllerAdapter)
     private controllerAdapter: ControllerAdapterType,
   ) {}
 

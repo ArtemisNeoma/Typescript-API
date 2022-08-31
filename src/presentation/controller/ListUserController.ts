@@ -3,10 +3,13 @@ import { NextFunction, Request, Response } from 'express';
 import { IListUserService } from '@interfaces/domain/user/services/service';
 import { IEndPointsController } from 'interfaces/presentation/controller';
 import { inject, injectable } from 'tsyringe';
+import { tokens } from '@di/tokens';
 
 @injectable()
 export default class ListUserController implements IEndPointsController {
-  constructor(@inject('ListUserService') private service: IListUserService) {}
+  constructor(
+    @inject(tokens.ListUserService) private service: IListUserService,
+  ) {}
 
   public handle(
     req: Request,

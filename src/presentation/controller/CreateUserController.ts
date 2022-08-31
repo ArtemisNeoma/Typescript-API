@@ -3,11 +3,12 @@ import { NextFunction, Request, Response } from 'express';
 import { ICreateUserService } from '@interfaces/domain/user/services/service';
 import { IEndPointsController } from 'interfaces/presentation/controller';
 import { inject, injectable } from 'tsyringe';
+import { tokens } from '@di/tokens';
 
 @injectable()
 export default class CreateUserController implements IEndPointsController {
   constructor(
-    @inject('CreateUserService') private service: ICreateUserService,
+    @inject(tokens.CreateUserService) private service: ICreateUserService,
   ) {}
 
   public async handle(

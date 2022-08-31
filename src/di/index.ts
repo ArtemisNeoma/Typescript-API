@@ -19,36 +19,46 @@ import ListUserController from '@presentation/controller/ListUserController';
 import { container } from 'tsyringe';
 import { IRepositoryUser } from '@interfaces/domain/user/repository';
 import getCep from '@services/cep/getCep';
+import { tokens } from './tokens';
 
-container.register<Router>('FrameworkRouter', { useValue: Router() });
+container.register<Router>(tokens.FrameworkRouter, { useValue: Router() });
 container.registerSingleton<IEndPointsController>(
-  'CreateUserController',
+  tokens.CreateUserController,
   CreateUserController,
 );
 container.registerSingleton<IEndPointsController>(
-  'ListUserController',
+  tokens.ListUserController,
   ListUserController,
 );
-container.register<MiddlewareArray>('CreateUserMiddlewares', {
+container.register<MiddlewareArray>(tokens.CreateUserMiddlewares, {
   useValue: createUserMiddlewares,
 });
-container.register<ControllerAdapterType>('ControllerAdapter', {
+container.register<ControllerAdapterType>(tokens.ControllerAdapter, {
   useValue: controllerAdapter,
 });
 
-container.register<ICreateUserService>('CreateUserService', CreateUserService);
-container.register<IListUserService>('ListUserService', ListUserService);
+container.register<ICreateUserService>(
+  tokens.CreateUserService,
+  CreateUserService,
+);
+container.register<IListUserService>(tokens.ListUserService, ListUserService);
 
-container.registerSingleton<IRepositoryUser>('UserRepository', UserRepository);
-container.registerSingleton<IUserValidator>('UserValidator', UserValidator);
+container.registerSingleton<IRepositoryUser>(
+  tokens.UserRepository,
+  UserRepository,
+);
+container.registerSingleton<IUserValidator>(
+  tokens.UserValidator,
+  UserValidator,
+);
 
-container.register('getCep', {
+container.register(tokens.getCep, {
   useValue: getCep,
 });
-container.register('isCpfValid', {
+container.register(tokens.isCpfValid, {
   useValue: isCpfValid,
 });
-container.register('checkUnique', {
+container.register(tokens.checkUnique, {
   useValue: checkUnique,
 });
 
