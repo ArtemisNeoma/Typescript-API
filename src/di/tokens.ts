@@ -1,4 +1,6 @@
 export const tokens = {
+  UserRouter: Symbol('UserRouter'),
+  DocsRouter: Symbol('DocsRouter'),
   FrameworkRouter: Symbol('FrameworkRouter'),
   CreateUserController: Symbol('CreateUserController'),
   ListUserController: Symbol('ListUserController'),

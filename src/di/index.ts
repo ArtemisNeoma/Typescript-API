@@ -22,6 +22,12 @@ import getCep from '@services/cep/getCep';
 import { tokens } from './tokens';
 import { DocsService } from '@infrastructure/docs/DocsService';
 import { DocsController } from '@presentation/http/controllers/DocsController';
+import UserRouter from '@presentation/routes/UserRouter';
+import DocsRouter from '@presentation/http/DocsRouter';
+
+container.registerSingleton<UserRouter>(tokens.UserRouter, UserRouter);
+
+container.registerSingleton<DocsRouter>(tokens.DocsRouter, DocsRouter);
 
 container.register<Router>(tokens.FrameworkRouter, { useValue: Router() });
 container.registerSingleton<IEndPointsController>(
