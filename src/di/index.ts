@@ -20,6 +20,8 @@ import { container } from 'tsyringe';
 import { IRepositoryUser } from '@interfaces/domain/user/repository';
 import getCep from '@services/cep/getCep';
 import { tokens } from './tokens';
+import { DocsService } from '@infrastructure/docs/DocsService';
+import { DocsController } from '@presentation/http/controllers/DocsController';
 
 container.register<Router>(tokens.FrameworkRouter, { useValue: Router() });
 container.registerSingleton<IEndPointsController>(
@@ -37,11 +39,17 @@ container.register<ControllerAdapterType>(tokens.ControllerAdapter, {
   useValue: controllerAdapter,
 });
 
+container.registerSingleton<DocsController>(
+  tokens.DocsController,
+  DocsController,
+);
+
 container.register<ICreateUserService>(
   tokens.CreateUserService,
   CreateUserService,
 );
 container.register<IListUserService>(tokens.ListUserService, ListUserService);
+container.registerSingleton<DocsService>(tokens.DocsService, DocsService);
 
 container.registerSingleton<IRepositoryUser>(
   tokens.UserRepository,

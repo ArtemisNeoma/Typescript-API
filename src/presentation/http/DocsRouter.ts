@@ -7,7 +7,8 @@ import { DocsController } from './controllers/DocsController';
 export default class DocsRouter {
   constructor(
     @inject(tokens.FrameworkRouter) private router: Router,
-    @inject('DocsController') private docsController: DocsController,
+    @inject(tokens.DocsController)
+    private docsController: DocsController,
   ) {}
 
   public setup(): Router {
