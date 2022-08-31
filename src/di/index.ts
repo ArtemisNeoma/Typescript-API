@@ -44,11 +44,14 @@ container.registerSingleton<DocsController>(
   DocsController,
 );
 
-container.register<ICreateUserService>(
+container.registerSingleton<ICreateUserService>(
   tokens.CreateUserService,
   CreateUserService,
 );
-container.register<IListUserService>(tokens.ListUserService, ListUserService);
+container.registerSingleton<IListUserService>(
+  tokens.ListUserService,
+  ListUserService,
+);
 container.registerSingleton<DocsService>(tokens.DocsService, DocsService);
 
 container.registerSingleton<IRepositoryUser>(
