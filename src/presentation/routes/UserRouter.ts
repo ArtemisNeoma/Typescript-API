@@ -6,8 +6,8 @@ import { inject, injectable } from 'tsyringe';
 
 @injectable()
 export default class UserRouter {
+  private router = Router();
   constructor(
-    @inject(tokens.FrameworkRouter) private router: Router,
     @inject(tokens.CreateUserController)
     private createUserController: IEndPointsController,
     @inject(tokens.ListUserController)

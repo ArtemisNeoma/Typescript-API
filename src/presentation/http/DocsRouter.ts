@@ -5,8 +5,8 @@ import { DocsController } from './controllers/DocsController';
 
 @injectable()
 export default class DocsRouter {
+  private router = Router();
   constructor(
-    @inject(tokens.FrameworkRouter) private router: Router,
     @inject(tokens.DocsController)
     private docsController: DocsController,
   ) {}
