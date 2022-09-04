@@ -3,8 +3,9 @@ import express, { json } from 'express';
 import helmet from 'helmet';
 import container from '@di/index';
 import MainRouter from './presentation/routes';
+import { tokens } from '@di/tokens';
 
-const mainRouter = container.resolve(MainRouter);
+const mainRouter = container.resolve<MainRouter>(tokens.MainRouter);
 
 const app = express();
 app.use(helmet());

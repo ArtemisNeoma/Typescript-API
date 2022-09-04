@@ -16,7 +16,7 @@ import isCpfValid from '@util/validation/Cpf/isCpfValid';
 import { Router } from 'express';
 import CreateUserController from '@presentation/controller/CreateUserController';
 import ListUserController from '@presentation/controller/ListUserController';
-import { container } from 'tsyringe';
+import { container, Lifecycle } from 'tsyringe';
 import { IRepositoryUser } from '@interfaces/domain/user/repository';
 import getCep from '@services/cep/getCep';
 import { tokens } from './tokens';
@@ -24,6 +24,9 @@ import { DocsService } from '@infrastructure/docs/DocsService';
 import { DocsController } from '@presentation/http/controllers/DocsController';
 import UserRouter from '@presentation/routes/UserRouter';
 import DocsRouter from '@presentation/http/DocsRouter';
+import MainRouter from '@presentation/routes';
+
+container.registerSingleton<MainRouter>(tokens.MainRouter, MainRouter);
 
 container.registerSingleton<UserRouter>(tokens.UserRouter, UserRouter);
 

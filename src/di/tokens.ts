@@ -1,4 +1,5 @@
 export const tokens = {
+  MainRouter: Symbol('MainRouter'),
   UserRouter: Symbol('UserRouter'),
   DocsRouter: Symbol('DocsRouter'),
   FrameworkRouter: Symbol('FrameworkRouter'),
