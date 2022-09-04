@@ -6,8 +6,8 @@ import { tokens } from '@di/tokens';
 
 @injectable()
 export default class MainRouter {
+  private router: Router = Router();
   constructor(
-    @inject(tokens.FrameworkRouter) private router: Router,
     @inject(tokens.UserRouter) private userRouter: UserRouter,
     @inject(tokens.DocsRouter) private docsRouter: DocsRouter,
   ) {}
