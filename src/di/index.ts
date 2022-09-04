@@ -16,7 +16,7 @@ import isCpfValid from '@util/validation/Cpf/isCpfValid';
 import { Router } from 'express';
 import CreateUserController from '@presentation/controller/CreateUserController';
 import ListUserController from '@presentation/controller/ListUserController';
-import { container, Lifecycle } from 'tsyringe';
+import { container } from 'tsyringe';
 import { IRepositoryUser } from '@interfaces/domain/user/repository';
 import getCep from '@services/cep/getCep';
 import { tokens } from './tokens';
