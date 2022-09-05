@@ -1,14 +1,14 @@
 import StatusError from '@util/error';
 import { NextFunction, Request, Response } from 'express';
-import { IListUserService } from '@interfaces/domain/user/services/service';
+import { IListCustomerService } from '@interfaces/domain/customer/services/service';
 import { IEndPointsController } from 'interfaces/presentation/controller';
 import { inject, injectable } from 'tsyringe';
 import { tokens } from '@di/tokens';
 
 @injectable()
-export default class ListUserController implements IEndPointsController {
+export default class ListCustomerController implements IEndPointsController {
   constructor(
-    @inject(tokens.ListUserService) private service: IListUserService,
+    @inject(tokens.ListCustomerService) private service: IListCustomerService,
   ) {}
 
   public handle(

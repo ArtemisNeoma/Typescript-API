@@ -1,14 +1,15 @@
 import StatusError from '@util/error';
 import { NextFunction, Request, Response } from 'express';
-import { ICreateUserService } from '@interfaces/domain/user/services/service';
+import { ICreateCustomerService } from '@interfaces/domain/customer/services/service';
 import { IEndPointsController } from 'interfaces/presentation/controller';
 import { inject, injectable } from 'tsyringe';
 import { tokens } from '@di/tokens';
 
 @injectable()
-export default class CreateUserController implements IEndPointsController {
+export default class CreateCustomerController implements IEndPointsController {
   constructor(
-    @inject(tokens.CreateUserService) private service: ICreateUserService,
+    @inject(tokens.CreateCustomerService)
+    private service: ICreateCustomerService,
   ) {}
 
   public async handle(
@@ -17,8 +18,8 @@ export default class CreateUserController implements IEndPointsController {
     next: NextFunction,
   ): Promise<Response | undefined> {
     try {
-      const newUser = await this.service.create(req.body);
-      return res.status(201).json({ message: newUser });
+      const newCustomer = await this.service.create(req.body);
+      return res.status(201).json({ message: newCustomer });
     } catch (error) {
       next(new StatusError(422, `${error}`));
     }

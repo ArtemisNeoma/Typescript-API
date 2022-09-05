@@ -1,11 +1,11 @@
 import { IVariableDatabase } from '@interfaces/domain/repository';
-import { IUserValidator } from '@interfaces/domain/user/services/validation';
-import { ICustomer } from '@interfaces/domain/user/repository';
+import { ICustomerValidator } from '@interfaces/domain/customer/services/validation';
+import { ICustomer } from '@interfaces/domain/customer/repository';
 import { inject, injectable } from 'tsyringe';
 import { tokens } from '@di/tokens';
 
 @injectable()
-export default class UserValidator implements IUserValidator {
+export default class CustomerValidator implements ICustomerValidator {
   readonly _getCep: (value: string) => Promise<boolean>;
   readonly _isCpfValid: (cpf: string) => boolean;
   readonly _checkUnique: (

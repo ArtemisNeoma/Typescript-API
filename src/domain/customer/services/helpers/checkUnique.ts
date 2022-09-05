@@ -1,5 +1,5 @@
 import { IVariableDatabase } from '@interfaces/domain/repository';
-import { ICustomer } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/customer/repository';
 
 export const checkUnique = (
   field: string,

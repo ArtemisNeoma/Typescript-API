@@ -1,21 +1,21 @@
 import request from 'supertest';
 import app from '../../index';
-import UserRepository from '@domain/user/repository/UserRepository';
+import CustomerRepository from '@domain/customer/repository/CustomerRepository';
 import axios from 'axios';
 import {
-  mCpfEqualUser,
-  mCpfInvalidUser,
-  mCpfRepeatedUser,
-  mEmailRepeatedUser,
+  mCpfEqualCustomer,
+  mCpfInvalidCustomer,
+  mCpfRepeatedCustomer,
+  mEmailRepeatedCustomer,
   mockDatabase,
-  mockValidUser,
-  mPCodeInvalidUser,
-} from './mocks/UserRouter.mock';
-import { ICustomer } from '@interfaces/domain/user/repository';
+  mockValidCustomer,
+  mPCodeInvalidCustomer,
+} from './mocks/CustomerRouter.mock';
+import { ICustomer } from '@interfaces/domain/customer/repository';
 
 const spyRepository = {
-  readAll: jest.spyOn(UserRepository.prototype, 'readAll'),
-  create: jest.spyOn(UserRepository.prototype, 'create'),
+  readAll: jest.spyOn(CustomerRepository.prototype, 'readAll'),
+  create: jest.spyOn(CustomerRepository.prototype, 'create'),
 };
 
 beforeEach(() => {
@@ -30,7 +30,10 @@ describe('Route /customer', () => {
   describe('GET /customer', () => {
     const expectedResults: Record<string, object | string> = {
       listJson: {
-        0: { email: mEmailRepeatedUser.email, cpf: mCpfRepeatedUser.cpf },
+        0: {
+          email: mEmailRepeatedCustomer.email,
+          cpf: mCpfRepeatedCustomer.cpf,
+        },
       },
       getError: 'Error: Failed to readAll database',
     };
@@ -58,8 +61,8 @@ describe('Route /customer', () => {
 
   describe('POST /customer', () => {
     const expectedResults: Record<string, ICustomer | string> = {
-      newUser: {
-        ...mockValidUser,
+      newCustomer: {
+        ...mockValidCustomer,
         cpf: '12345678909',
         cellphone: '47991234567',
         birthdate: '2000-01-01T00:00:00.000Z',
@@ -92,16 +95,18 @@ describe('Route /customer', () => {
     });
 
     it('Should respond with sanitized user json when creating valid user', async () => {
-      spyRepository.create.mockImplementation(() => mockValidUser);
-      const res = await request(app).post('/customer').send(mockValidUser);
+      spyRepository.create.mockImplementation(() => mockValidCustomer);
+      const res = await request(app).post('/customer').send(mockValidCustomer);
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(201);
-      expect(res.body.message).toEqual(expectedResults.newUser);
+      expect(res.body.message).toEqual(expectedResults.newCustomer);
     });
 
     it('Should respond with error when cpf already exists', async () => {
-      spyRepository.create.mockImplementation(() => mCpfRepeatedUser);
-      const res = await request(app).post('/customer').send(mCpfRepeatedUser);
+      spyRepository.create.mockImplementation(() => mCpfRepeatedCustomer);
+      const res = await request(app)
+        .post('/customer')
+        .send(mCpfRepeatedCustomer);
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(422);
       expect(res.body.error).toEqual(
@@ -110,8 +115,10 @@ describe('Route /customer', () => {
     });
 
     it('Should respond with error when email already exists', async () => {
-      spyRepository.create.mockImplementation(() => mEmailRepeatedUser);
-      const res = await request(app).post('/customer').send(mEmailRepeatedUser);
+      spyRepository.create.mockImplementation(() => mEmailRepeatedCustomer);
+      const res = await request(app)
+        .post('/customer')
+        .send(mEmailRepeatedCustomer);
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(422);
       expect(res.body.error).toEqual(
@@ -120,8 +127,8 @@ describe('Route /customer', () => {
     });
 
     it('Should respond with error when user cpf is composed only with one number', async () => {
-      spyRepository.create.mockImplementation(() => mCpfEqualUser);
-      const res = await request(app).post('/customer').send(mCpfEqualUser);
+      spyRepository.create.mockImplementation(() => mCpfEqualCustomer);
+      const res = await request(app).post('/customer').send(mCpfEqualCustomer);
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(422);
       expect(res.body.error).toEqual(
@@ -130,8 +137,10 @@ describe('Route /customer', () => {
     });
 
     it('Should respond with error when user cpf is invalid', async () => {
-      spyRepository.create.mockImplementation(() => mCpfInvalidUser);
-      const res = await request(app).post('/customer').send(mCpfInvalidUser);
+      spyRepository.create.mockImplementation(() => mCpfInvalidCustomer);
+      const res = await request(app)
+        .post('/customer')
+        .send(mCpfInvalidCustomer);
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(422);
       expect(res.body.error).toEqual(
@@ -140,9 +149,11 @@ describe('Route /customer', () => {
     });
 
     it('Should respond with error when user postal code is invalid', async () => {
-      spyRepository.create.mockImplementation(() => mPCodeInvalidUser);
+      spyRepository.create.mockImplementation(() => mPCodeInvalidCustomer);
       jest.spyOn(axios, 'get').mockImplementation(() => Promise.reject());
-      const res = await request(app).post('/customer').send(mPCodeInvalidUser);
+      const res = await request(app)
+        .post('/customer')
+        .send(mPCodeInvalidCustomer);
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(422);
       expect(res.body.error).toEqual(
@@ -154,10 +165,12 @@ describe('Route /customer', () => {
       'Should respond with error when %p is missing in new user',
       async (firstParam) => {
         jest
-          .spyOn(UserRepository.prototype, 'create')
-          .mockImplementation(() => mockValidUser);
-        (mockValidUser[firstParam] as unknown) = undefined;
-        const res = await request(app).post('/customer').send(mockValidUser);
+          .spyOn(CustomerRepository.prototype, 'create')
+          .mockImplementation(() => mockValidCustomer);
+        (mockValidCustomer[firstParam] as unknown) = undefined;
+        const res = await request(app)
+          .post('/customer')
+          .send(mockValidCustomer);
         expect(res).not.toBeUndefined();
         expect(res.status).toBe(422);
       },

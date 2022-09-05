@@ -5,14 +5,14 @@ import { Router } from 'express';
 import { inject, injectable } from 'tsyringe';
 
 @injectable()
-export default class UserRouter {
+export default class CustomerRouter {
   private router = Router();
   constructor(
-    @inject(tokens.CreateUserController)
-    private createUserController: IEndPointsController,
-    @inject(tokens.ListUserController)
-    private listUserController: IEndPointsController,
-    @inject(tokens.CreateUserMiddlewares)
+    @inject(tokens.CreateCustomerController)
+    private createCustomerController: IEndPointsController,
+    @inject(tokens.ListCustomerController)
+    private listCustomerController: IEndPointsController,
+    @inject(tokens.CreateCustomerMiddlewares)
     private createMiddlewares: MiddlewareArray,
     @inject(tokens.ControllerAdapter)
     private controllerAdapter: ControllerAdapterType,
@@ -22,9 +22,9 @@ export default class UserRouter {
     this.router.post(
       '/',
       this.createMiddlewares,
-      this.controllerAdapter(this.createUserController),
+      this.controllerAdapter(this.createCustomerController),
     );
-    this.router.get('/', this.controllerAdapter(this.listUserController));
+    this.router.get('/', this.controllerAdapter(this.listCustomerController));
     return this.router;
   }
 }

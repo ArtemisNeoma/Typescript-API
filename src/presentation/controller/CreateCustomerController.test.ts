@@ -1,16 +1,16 @@
 import container from '@di/index';
 import { NextFunction, Request, Response } from 'express';
-import CreateUserController from './CreateUserController';
-import CreateUserService from '@domain/user/services/CreateUserService';
 import StatusError from '@util/error';
-import { ICustomer } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/customer/repository';
+import CreateCustomerService from '@domain/customer/services/CreateCustomerService';
+import CreateCustomerController from './CreateCustomerController';
 
 const userMock: ICustomer = {} as ICustomer;
 const req = {} as Request;
 const res = {} as Response;
 const next = jest.fn() as NextFunction;
-const spyCreateUserController = jest.spyOn(
-  CreateUserService.prototype,
+const spyCreateCustomerController = jest.spyOn(
+  CreateCustomerService.prototype,
   'create',
 );
 
@@ -20,19 +20,21 @@ beforeAll(() => {
   res.json = jest.fn();
 });
 
-describe('CreateUserController', () => {
+describe('CreateCustomerController', () => {
   describe('handle', () => {
-    const createUserController = container.resolve(CreateUserController);
+    const createCustomerController = container.resolve(
+      CreateCustomerController,
+    );
     it('Should create user when all fields are correct', async () => {
-      spyCreateUserController.mockResolvedValue(userMock);
-      await createUserController.handle(req, res, next);
+      spyCreateCustomerController.mockResolvedValue(userMock);
+      await createCustomerController.handle(req, res, next);
       expect(res.status).toBeCalled();
       expect(res.status).toHaveBeenCalledWith(201);
     });
     it('Should run next with error when user is incorrect', async () => {
       const error = new Error();
-      spyCreateUserController.mockRejectedValue(error);
-      await createUserController.handle(req, res, next);
+      spyCreateCustomerController.mockRejectedValue(error);
+      await createCustomerController.handle(req, res, next);
       expect(next).toBeCalled();
       expect(next).toHaveBeenCalledWith(new StatusError(422, `${error}`));
     });

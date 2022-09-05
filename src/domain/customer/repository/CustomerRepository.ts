@@ -1,12 +1,15 @@
 import AbstractRepository from '@domain/AbstractRepository';
-import { IRepositoryUser, ICustomer } from '@interfaces/domain/user/repository';
+import {
+  IRepositoryCustomer,
+  ICustomer,
+} from '@interfaces/domain/customer/repository';
 import { IVariableDatabase } from 'interfaces/domain/repository';
 import { injectable } from 'tsyringe';
 
 @injectable()
-export default class UserRepository
+export default class CustomerRepository
   extends AbstractRepository
-  implements IRepositoryUser
+  implements IRepositoryCustomer
 {
   public getNewIndex(): number {
     const idArray = Array.from(this.database.keys());

@@ -6,7 +6,7 @@ import {
   stringValidation,
 } from '@util/validation/baseValidators';
 import { ISchema } from '@interfaces/middleware';
-import { ICustomer } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/customer/repository';
 
 const { object } = Joi.types();
 

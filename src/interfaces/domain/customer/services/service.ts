@@ -4,10 +4,10 @@ export interface IDatabaseObject {
   [k: string]: ICustomer;
 }
 
-export interface ICreateUserService {
+export interface ICreateCustomerService {
   create(user: ICustomer): Promise<ICustomer>;
 }
 
-export interface IListUserService {
+export interface IListCustomerService {
   readAll(): IDatabaseObject;
 }

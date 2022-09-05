@@ -1,4 +1,4 @@
-import { ICustomer } from './user/repository';
+import { ICustomer } from './customer/repository';
 
 export type IVariableDatabase = Map<number, ICustomer>;
 

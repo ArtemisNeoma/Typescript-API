@@ -1,6 +1,6 @@
-import { ICustomer } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/customer/repository';
 
-export const mockValidUser: ICustomer = {
+export const mockValidCustomer: ICustomer = {
   full_name: 'Teste do Teste',
   email: 'test@test.com',
   email_confirmation: 'test@test.com',
@@ -15,35 +15,35 @@ export const mockValidUser: ICustomer = {
   address: 'Rua X, 001, Itoupava',
 };
 
-export const mCpfRepeatedUser: ICustomer = {
-  ...mockValidUser,
+export const mCpfRepeatedCustomer: ICustomer = {
+  ...mockValidCustomer,
   cpf: '19087282052',
 };
 
-export const mEmailRepeatedUser: ICustomer = {
-  ...mockValidUser,
+export const mEmailRepeatedCustomer: ICustomer = {
+  ...mockValidCustomer,
   email: 'repeated@repeated.com',
   email_confirmation: 'repeated@repeated.com',
 };
 
-export const mCpfEqualUser: ICustomer = {
-  ...mockValidUser,
+export const mCpfEqualCustomer: ICustomer = {
+  ...mockValidCustomer,
   email: 'equal@equal.com',
   email_confirmation: 'equal@equal.com',
   cpf: '11111111111',
 };
 
-export const mCpfInvalidUser: ICustomer = {
-  ...mockValidUser,
+export const mCpfInvalidCustomer: ICustomer = {
+  ...mockValidCustomer,
   cpf: '10897799900',
 };
 
-export const mPCodeInvalidUser: ICustomer = {
-  ...mockValidUser,
+export const mPCodeInvalidCustomer: ICustomer = {
+  ...mockValidCustomer,
   postal_code: '01010101',
 };
 
 export const mockDatabase = new Map<number, ICustomer>().set(0, {
-  email: mEmailRepeatedUser.email,
-  cpf: mCpfRepeatedUser.cpf,
+  email: mEmailRepeatedCustomer.email,
+  cpf: mCpfRepeatedCustomer.cpf,
 } as ICustomer);

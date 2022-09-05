@@ -15,7 +15,7 @@ export interface ICustomer {
   address: string;
 }
 
-export interface IRepositoryUser extends IEndPointsRepository {
+export interface IRepositoryCustomer extends IEndPointsRepository {
   create(entity: ICustomer): ICustomer | undefined;
   read(id: number): undefined | ICustomer;
   readAll(): IVariableDatabase;

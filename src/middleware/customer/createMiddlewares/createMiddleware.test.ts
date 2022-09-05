@@ -1,4 +1,4 @@
-import { ICustomer } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/customer/repository';
 import StatusError from '@util/error';
 import { Request, Response } from 'express';
 import { createMiddleware } from './createMiddleware';

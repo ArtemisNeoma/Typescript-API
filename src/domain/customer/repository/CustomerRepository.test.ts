@@ -1,42 +1,46 @@
 import container from '@di/index';
-import { ICustomer } from '@interfaces/domain/user/repository';
-import UserRepository from './UserRepository';
+import { ICustomer } from '@interfaces/domain/customer/repository';
+import CustomerRepository from './CustomerRepository';
 
-const userRepository = container.resolve(UserRepository);
-const mockUser = {} as ICustomer;
-const mockUserUpdated = {} as ICustomer;
-const mockDatabaseGet = jest.spyOn(UserRepository.prototype, 'database', 'get');
+const userRepository = container.resolve(CustomerRepository);
+const mockCustomer = {} as ICustomer;
+const mockCustomerUpdated = {} as ICustomer;
+const mockDatabaseGet = jest.spyOn(
+  CustomerRepository.prototype,
+  'database',
+  'get',
+);
 
 beforeAll(() => {
-  mockUserUpdated.email = 'test@test.com';
+  mockCustomerUpdated.email = 'test@test.com';
 });
 
 beforeEach(() => {
   mockDatabaseGet.mockReturnValue(new Map<number, ICustomer>());
 });
-describe('UserRepository', () => {
+describe('CustomerRepository', () => {
   describe('getNewIndex', () => {
     it('Should return 0 when calculating new index for an empty database', () => {
       expect(userRepository.getNewIndex()).toBe(0);
     });
     it('Should return the biggest id + 1 (2+1=3) when calculating new index for a database', () => {
       mockDatabaseGet.mockReturnValueOnce(
-        new Map<number, ICustomer>().set(0, mockUser).set(2, mockUser),
+        new Map<number, ICustomer>().set(0, mockCustomer).set(2, mockCustomer),
       );
       expect(userRepository.getNewIndex()).toBe(3);
     });
   });
   describe('create', () => {
     it('Should return new user when running the create method', () => {
-      expect(userRepository.create(mockUser)).toEqual(mockUser);
+      expect(userRepository.create(mockCustomer)).toEqual(mockCustomer);
     });
   });
   describe('read', () => {
     it('Should return the matching index user when index exists', () => {
       mockDatabaseGet.mockReturnValueOnce(
-        new Map<number, ICustomer>().set(0, mockUser),
+        new Map<number, ICustomer>().set(0, mockCustomer),
       );
-      expect(userRepository.read(0)).toEqual(mockUser);
+      expect(userRepository.read(0)).toEqual(mockCustomer);
     });
     it('Should return undefined when getting an absent index', () => {
       expect(userRepository.read(0)).toEqual(undefined);
@@ -49,9 +53,9 @@ describe('UserRepository', () => {
     it("Should return filled database when userRepository's database is filled", () => {
       mockDatabaseGet.mockReturnValue(
         new Map<number, ICustomer>()
-          .set(0, mockUser)
-          .set(1, mockUser)
-          .set(2, mockUser),
+          .set(0, mockCustomer)
+          .set(1, mockCustomer)
+          .set(2, mockCustomer),
       );
       expect(userRepository.readAll()).toBe(userRepository.database);
     });
@@ -59,15 +63,17 @@ describe('UserRepository', () => {
   describe('update', () => {
     it('Should return updated user when updating user', () => {
       mockDatabaseGet.mockReturnValue(
-        new Map<number, ICustomer>().set(0, mockUser),
+        new Map<number, ICustomer>().set(0, mockCustomer),
       );
-      expect(userRepository.update(0, mockUserUpdated)).toBe(mockUserUpdated);
+      expect(userRepository.update(0, mockCustomerUpdated)).toBe(
+        mockCustomerUpdated,
+      );
     });
   });
   describe('delete', () => {
     it('Should return true when deleting an entry that exists', () => {
       mockDatabaseGet.mockReturnValue(
-        new Map<number, ICustomer>().set(0, mockUser),
+        new Map<number, ICustomer>().set(0, mockCustomer),
       );
       expect(userRepository.delete(0)).toBe(true);
     });

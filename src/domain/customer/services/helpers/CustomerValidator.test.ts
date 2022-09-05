@@ -1,8 +1,8 @@
-import UserValidator from './UserValidator';
 import container from '@di/index';
-import { ICustomer } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/customer/repository';
+import CustomerValidator from './CustomerValidator';
 
-const userValidator = container.resolve(UserValidator);
+const userValidator = container.resolve(CustomerValidator);
 const mockMethods = {
   checkUnique: jest.spyOn(userValidator, '_checkUnique').mockReturnValue(true),
   getCep: jest.spyOn(userValidator, '_getCep').mockResolvedValue(true),
@@ -10,7 +10,7 @@ const mockMethods = {
 };
 const mockDatabase = new Map<number, ICustomer>();
 
-describe('UserValidator', () => {
+describe('CustomerValidator', () => {
   describe('validate', () => {
     it('Should not throw error when all validations return true', async () => {
       await expect(
