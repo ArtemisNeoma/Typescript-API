@@ -1,9 +1,9 @@
 import { IVariableDatabase } from '@interfaces/domain/repository';
-import { IUser } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/user/repository';
 import checkUnique from './checkUnique';
 
-const mockDatabase: IVariableDatabase = new Map<number, IUser>();
-const mockUser: IUser = { email: 'test@test.com.br' } as IUser;
+const mockDatabase: IVariableDatabase = new Map<number, ICustomer>();
+const mockUser: ICustomer = { email: 'test@test.com.br' } as ICustomer;
 
 describe('checkUnique', () => {
   describe('checkUnique', () => {

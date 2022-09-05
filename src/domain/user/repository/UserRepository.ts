@@ -1,5 +1,5 @@
 import AbstractRepository from '@domain/AbstractRepository';
-import { IRepositoryUser, IUser } from '@interfaces/domain/user/repository';
+import { IRepositoryUser, ICustomer } from '@interfaces/domain/user/repository';
 import { IVariableDatabase } from 'interfaces/domain/repository';
 import { injectable } from 'tsyringe';
 
@@ -16,13 +16,13 @@ export default class UserRepository
     return Math.max(...idArray) + 1;
   }
 
-  public create(entity: IUser): IUser | undefined {
+  public create(entity: ICustomer): ICustomer | undefined {
     const newId = this.getNewIndex();
     this.database.set(newId, entity);
     return this.database.get(newId);
   }
 
-  public read(id: number): undefined | IUser {
+  public read(id: number): undefined | ICustomer {
     return this.database.get(id);
   }
 
@@ -30,7 +30,7 @@ export default class UserRepository
     return this.database;
   }
 
-  public update(id: number, newEntity: IUser): IUser | undefined {
+  public update(id: number, newEntity: ICustomer): ICustomer | undefined {
     this.database.set(id, newEntity);
     return this.database.get(id);
   }

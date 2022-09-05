@@ -11,7 +11,7 @@ import {
   mockValidUser,
   mPCodeInvalidUser,
 } from './mocks/UserRouter.mock';
-import { IUser } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/user/repository';
 
 const spyRepository = {
   readAll: jest.spyOn(UserRepository.prototype, 'readAll'),
@@ -57,7 +57,7 @@ describe('Route /customer', () => {
   });
 
   describe('POST /customer', () => {
-    const expectedResults: Record<string, IUser | string> = {
+    const expectedResults: Record<string, ICustomer | string> = {
       newUser: {
         ...mockValidUser,
         cpf: '12345678909',
@@ -72,7 +72,7 @@ describe('Route /customer', () => {
       invalidPostalCode: '01010101',
     };
 
-    const missingCases: (keyof IUser)[] = [
+    const missingCases: (keyof ICustomer)[] = [
       'address',
       'postal_code',
       'city',

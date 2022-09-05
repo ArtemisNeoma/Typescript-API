@@ -1,11 +1,11 @@
-import { IUser } from '../repository';
+import { ICustomer } from '../repository';
 
 export interface IDatabaseObject {
-  [k: string]: IUser;
+  [k: string]: ICustomer;
 }
 
 export interface ICreateUserService {
-  create(user: IUser): Promise<IUser>;
+  create(user: ICustomer): Promise<ICustomer>;
 }
 
 export interface IListUserService {

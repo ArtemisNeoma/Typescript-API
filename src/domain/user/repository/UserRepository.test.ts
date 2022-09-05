@@ -1,10 +1,10 @@
 import container from '@di/index';
-import { IUser } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/user/repository';
 import UserRepository from './UserRepository';
 
 const userRepository = container.resolve(UserRepository);
-const mockUser = {} as IUser;
-const mockUserUpdated = {} as IUser;
+const mockUser = {} as ICustomer;
+const mockUserUpdated = {} as ICustomer;
 const mockDatabaseGet = jest.spyOn(UserRepository.prototype, 'database', 'get');
 
 beforeAll(() => {
@@ -12,7 +12,7 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  mockDatabaseGet.mockReturnValue(new Map<number, IUser>());
+  mockDatabaseGet.mockReturnValue(new Map<number, ICustomer>());
 });
 describe('UserRepository', () => {
   describe('getNewIndex', () => {
@@ -21,7 +21,7 @@ describe('UserRepository', () => {
     });
     it('Should return the biggest id + 1 (2+1=3) when calculating new index for a database', () => {
       mockDatabaseGet.mockReturnValueOnce(
-        new Map<number, IUser>().set(0, mockUser).set(2, mockUser),
+        new Map<number, ICustomer>().set(0, mockUser).set(2, mockUser),
       );
       expect(userRepository.getNewIndex()).toBe(3);
     });
@@ -34,7 +34,7 @@ describe('UserRepository', () => {
   describe('read', () => {
     it('Should return the matching index user when index exists', () => {
       mockDatabaseGet.mockReturnValueOnce(
-        new Map<number, IUser>().set(0, mockUser),
+        new Map<number, ICustomer>().set(0, mockUser),
       );
       expect(userRepository.read(0)).toEqual(mockUser);
     });
@@ -48,7 +48,7 @@ describe('UserRepository', () => {
     });
     it("Should return filled database when userRepository's database is filled", () => {
       mockDatabaseGet.mockReturnValue(
-        new Map<number, IUser>()
+        new Map<number, ICustomer>()
           .set(0, mockUser)
           .set(1, mockUser)
           .set(2, mockUser),
@@ -59,7 +59,7 @@ describe('UserRepository', () => {
   describe('update', () => {
     it('Should return updated user when updating user', () => {
       mockDatabaseGet.mockReturnValue(
-        new Map<number, IUser>().set(0, mockUser),
+        new Map<number, ICustomer>().set(0, mockUser),
       );
       expect(userRepository.update(0, mockUserUpdated)).toBe(mockUserUpdated);
     });
@@ -67,7 +67,7 @@ describe('UserRepository', () => {
   describe('delete', () => {
     it('Should return true when deleting an entry that exists', () => {
       mockDatabaseGet.mockReturnValue(
-        new Map<number, IUser>().set(0, mockUser),
+        new Map<number, ICustomer>().set(0, mockUser),
       );
       expect(userRepository.delete(0)).toBe(true);
     });

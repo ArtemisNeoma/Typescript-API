@@ -1,4 +1,4 @@
-import { IUser } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/user/repository';
 import StatusError from '@util/error';
 import { Request, Response } from 'express';
 import { createMiddleware } from './createMiddleware';
@@ -11,7 +11,7 @@ const spyValidateAsync = jest.spyOn(userCreateSchema, 'validateAsync');
 
 describe('createMiddleware', () => {
   it("Should run next without parameters when validation doesn't throw", async () => {
-    spyValidateAsync.mockResolvedValue({} as IUser);
+    spyValidateAsync.mockResolvedValue({} as ICustomer);
     await createMiddleware(req, res, next);
     expect(next).toHaveBeenCalledWith();
   });

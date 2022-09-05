@@ -1,7 +1,7 @@
 import { ICreateUserService } from '@interfaces/domain/user/services/service';
 import { inject, injectable } from 'tsyringe';
 import { IUserValidator } from '@interfaces/domain/user/services/validation';
-import { IRepositoryUser, IUser } from '@interfaces/domain/user/repository';
+import { IRepositoryUser, ICustomer } from '@interfaces/domain/user/repository';
 import { tokens } from '@di/tokens';
 @injectable()
 export default class CreateUserService implements ICreateUserService {
@@ -12,7 +12,7 @@ export default class CreateUserService implements ICreateUserService {
     private validator: IUserValidator,
   ) {}
 
-  public async create(user: IUser): Promise<IUser> {
+  public async create(user: ICustomer): Promise<ICustomer> {
     await this.validator.validate(user, this.repository.readAll());
     this.repository.create(user);
     return user;

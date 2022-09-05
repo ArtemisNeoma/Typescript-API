@@ -1,14 +1,14 @@
 import { IVariableDatabase } from '@interfaces/domain/repository';
-import { IUser } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/user/repository';
 
 export const checkUnique = (
   field: string,
-  fieldName: keyof IUser,
+  fieldName: keyof ICustomer,
   database: IVariableDatabase,
 ) => {
   const usersArray = Array.from(database.values());
   let result = true;
-  usersArray.map((value: IUser) => {
+  usersArray.map((value: ICustomer) => {
     if (value[fieldName] === field) {
       result = false;
     }

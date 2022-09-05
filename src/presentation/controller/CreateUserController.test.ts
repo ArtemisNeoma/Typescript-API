@@ -3,9 +3,9 @@ import { NextFunction, Request, Response } from 'express';
 import CreateUserController from './CreateUserController';
 import CreateUserService from '@domain/user/services/CreateUserService';
 import StatusError from '@util/error';
-import { IUser } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/user/repository';
 
-const userMock: IUser = {} as IUser;
+const userMock: ICustomer = {} as ICustomer;
 const req = {} as Request;
 const res = {} as Response;
 const next = jest.fn() as NextFunction;

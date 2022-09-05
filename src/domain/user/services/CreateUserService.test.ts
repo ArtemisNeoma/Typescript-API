@@ -1,10 +1,10 @@
 import container from '@di/index';
-import { IUser } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/user/repository';
 import UserRepository from '../repository/UserRepository';
 import CreateUserService from './CreateUserService';
 import UserValidator from './helpers/UserValidator';
 
-const newUser: IUser = {} as IUser;
+const newUser: ICustomer = {} as ICustomer;
 describe('CreateUserService', () => {
   describe('create', () => {
     const createUserService = container.resolve(CreateUserService);

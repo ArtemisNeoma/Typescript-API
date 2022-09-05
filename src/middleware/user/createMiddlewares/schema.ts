@@ -6,14 +6,14 @@ import {
   stringValidation,
 } from '@util/validation/baseValidators';
 import { ISchema } from '@interfaces/middleware';
-import { IUser } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/user/repository';
 
 const { object } = Joi.types();
 
 const emailValidation = (name: string): StringSchema =>
   stringValidation({ name }).email({ tlds: false });
 
-const userCreateSchema: ISchema<IUser> = object
+const userCreateSchema: ISchema<ICustomer> = object
   .keys({
     full_name: stringValidation({
       name: 'full_name',

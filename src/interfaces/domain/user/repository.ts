@@ -1,6 +1,6 @@
 import { IEndPointsRepository, IVariableDatabase } from '../repository';
 
-export interface IUser {
+export interface ICustomer {
   full_name: string;
   email: string;
   email_confirmation: string;
@@ -16,8 +16,8 @@ export interface IUser {
 }
 
 export interface IRepositoryUser extends IEndPointsRepository {
-  create(entity: IUser): IUser | undefined;
-  read(id: number): undefined | IUser;
+  create(entity: ICustomer): ICustomer | undefined;
+  read(id: number): undefined | ICustomer;
   readAll(): IVariableDatabase;
-  update(id: number, newEntity: IUser): IUser | undefined;
+  update(id: number, newEntity: ICustomer): ICustomer | undefined;
 }

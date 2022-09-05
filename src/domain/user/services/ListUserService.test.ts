@@ -1,11 +1,11 @@
 import container from '@di/index';
 import { IVariableDatabase } from '@interfaces/domain/repository';
-import { IUser } from '@interfaces/domain/user/repository';
+import { ICustomer } from '@interfaces/domain/user/repository';
 import UserRepository from '../repository/UserRepository';
 import ListUserService from './ListUserService';
 
-const mockUser = {} as IUser;
-const databaseMock: IVariableDatabase = new Map<number, IUser>().set(
+const mockUser = {} as ICustomer;
+const databaseMock: IVariableDatabase = new Map<number, ICustomer>().set(
   0,
   mockUser,
 );

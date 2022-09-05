@@ -1,5 +1,5 @@
 import { IVariableDatabase } from '../../repository';
-import { IUser } from '../repository';
+import { ICustomer } from '../repository';
 export interface IUserValidator {
-  validate(user: IUser, database: IVariableDatabase): Promise<void>;
+  validate(user: ICustomer, database: IVariableDatabase): Promise<void>;
 }
