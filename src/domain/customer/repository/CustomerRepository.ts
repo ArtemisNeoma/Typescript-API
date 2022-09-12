@@ -1,44 +1,47 @@
-import AbstractRepository from '@domain/AbstractRepository';
+import { tokens } from '@di/tokens';
 import {
   IRepositoryCustomer,
   ICustomer,
 } from '@interfaces/domain/customer/repository';
-import { IVariableDatabase } from 'interfaces/domain/repository';
-import { injectable } from 'tsyringe';
+import { IDatabaseClient } from '@interfaces/infrastructure';
+import { inject, injectable } from 'tsyringe';
 
 @injectable()
-export default class CustomerRepository
-  extends AbstractRepository
-  implements IRepositoryCustomer
-{
-  public getNewIndex(): number {
-    const idArray = Array.from(this.database.keys());
-    if (idArray.length === 0) {
-      return 0;
-    }
-    return Math.max(...idArray) + 1;
+export default class CustomerRepository implements IRepositoryCustomer {
+  constructor(
+    @inject(tokens.DatabaseClient)
+    private dbClient: IDatabaseClient,
+  ) {}
+
+  public async create(entity: ICustomer) {
+    return await this.dbClient
+      .getInstance()
+      .collection('Customer')
+      .insertOne(entity);
   }
 
-  public create(entity: ICustomer): ICustomer | undefined {
-    const newId = this.getNewIndex();
-    this.database.set(newId, entity);
-    return this.database.get(newId);
+  public async read(id: number) {
+    return await this.dbClient
+      .getInstance()
+      .collection('Customer')
+      .findOne({ _id: id });
   }
 
-  public read(id: number): undefined | ICustomer {
-    return this.database.get(id);
+  public readAll() {
+    return this.dbClient.getInstance().collection('Customer').find();
   }
 
-  public readAll(): IVariableDatabase {
-    return this.database;
+  public async update(id: number, newEntity: ICustomer) {
+    return await this.dbClient
+      .getInstance()
+      .collection('Customer')
+      .updateOne({ _id: id }, newEntity);
   }
 
-  public update(id: number, newEntity: ICustomer): ICustomer | undefined {
-    this.database.set(id, newEntity);
-    return this.database.get(id);
-  }
-
-  public delete(id: number): boolean {
-    return this.database.delete(id);
+  public async delete(id: number) {
+    return await this.dbClient
+      .getInstance()
+      .collection('Customer')
+      .deleteOne({ _id: id });
   }
 }

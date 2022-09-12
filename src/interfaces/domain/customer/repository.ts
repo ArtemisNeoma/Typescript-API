@@ -1,3 +1,11 @@
+import {
+  DeleteResult,
+  Document,
+  FindCursor,
+  InsertOneResult,
+  UpdateResult,
+  WithId,
+} from 'mongodb';
 import { IEndPointsRepository, IVariableDatabase } from '../repository';
 
 export interface ICustomer {
@@ -16,8 +24,6 @@ export interface ICustomer {
 }
 
 export interface IRepositoryCustomer extends IEndPointsRepository {
-  create(entity: ICustomer): ICustomer | undefined;
-  read(id: number): undefined | ICustomer;
-  readAll(): IVariableDatabase;
-  update(id: number, newEntity: ICustomer): ICustomer | undefined;
+  create(entity: ICustomer): Promise<InsertOneResult<Document>>;
+  update(id: number, newEntity: ICustomer): Promise<UpdateResult>;
 }
