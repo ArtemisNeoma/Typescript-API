@@ -13,6 +13,6 @@ export interface IEndPointsRepository {
   create(entity: object): Promise<InsertOneResult<Document>>;
   read(id: number): Promise<WithId<Document> | null>;
   update(id: number, newEntity: object): Promise<UpdateResult>;
-  readAll(): Promise<WithId<Document>[]>;
+  readAll(): Promise<ReadAllType>;
   delete(id: number): Promise<DeleteResult>;
 }
