@@ -1,12 +1,5 @@
-import {
-  DeleteResult,
-  Document,
-  FindCursor,
-  InsertOneResult,
-  UpdateResult,
-  WithId,
-} from 'mongodb';
-import { IEndPointsRepository, IVariableDatabase } from '../repository';
+import { Document, InsertOneResult, UpdateResult } from 'mongodb';
+import { IEndPointsRepository } from '../repository';
 
 export interface ICustomer {
   full_name: string;
