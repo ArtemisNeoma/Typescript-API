@@ -27,8 +27,12 @@ export default class CustomerRepository implements IRepositoryCustomer {
       .findOne({ _id: id });
   }
 
-  public readAll() {
-    return this.dbClient.getInstance().collection('Customer').find();
+  public async readAll() {
+    return await this.dbClient
+      .getInstance()
+      .collection('Customer')
+      .find()
+      .toArray();
   }
 
   public async update(id: number, newEntity: ICustomer) {
