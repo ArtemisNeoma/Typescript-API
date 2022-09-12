@@ -25,6 +25,8 @@ import { DocsController } from '@presentation/http/controllers/DocsController';
 import CustomerRouter from '@presentation/routes/CustomerRouter';
 import DocsRouter from '@presentation/http/DocsRouter';
 import MainRouter from '@presentation/routes';
+import { IDatabaseClient } from '@interfaces/infrastructure';
+import MongoDBClient from '@infrastructure/mongodb/MongoDBClient';
 
 container.registerSingleton<MainRouter>(tokens.MainRouter, MainRouter);
 
@@ -70,6 +72,11 @@ container.registerSingleton<IRepositoryCustomer>(
   tokens.CustomerRepository,
   CustomerRepository,
 );
+container.registerSingleton<IDatabaseClient>(
+  tokens.DatabaseClient,
+  MongoDBClient,
+);
+
 container.registerSingleton<ICustomerValidator>(
   tokens.CustomerValidator,
   CustomerValidator,
