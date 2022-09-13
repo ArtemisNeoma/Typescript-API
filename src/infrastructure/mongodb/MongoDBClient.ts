@@ -20,10 +20,10 @@ export default class MongoDBClient implements IDatabaseClient {
     );
   }
 
-  public async connect(): Promise<any> {
+  public async connect(): Promise<void> {
     await this.client.connect();
   }
-  public async close(): Promise<any> {
+  public async close(): Promise<void> {
     await this.client.close();
   }
   public getInstance(): Db {
