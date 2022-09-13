@@ -1,6 +1,5 @@
 import CustomerRepository from '@domain/customer/repository/CustomerRepository';
 import CreateCustomerService from '@domain/customer/services/CreateCustomerService';
-import checkUnique from '@domain/customer/services/helpers/checkUnique';
 import CustomerValidator from '@domain/customer/services/helpers/CustomerValidator';
 import ListCustomerService from '@domain/customer/services/ListCustomerService';
 import {
@@ -87,9 +86,6 @@ container.register(tokens.getCep, {
 });
 container.register(tokens.isCpfValid, {
   useValue: isCpfValid,
-});
-container.register(tokens.checkUnique, {
-  useValue: checkUnique,
 });
 
 export default container;
