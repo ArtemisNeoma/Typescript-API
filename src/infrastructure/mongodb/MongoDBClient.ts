@@ -1,4 +1,5 @@
 import { IDatabaseClient } from '@interfaces/infrastructure';
+import { serverLogger } from '@util/logger';
 import { Db, MongoClient } from 'mongodb';
 import { injectable } from 'tsyringe';
 
@@ -9,7 +10,14 @@ export default class MongoDBClient implements IDatabaseClient {
   private database = this.client.db('typescript_api');
 
   constructor() {
-    this.connect();
+    this.connect().then(
+      () => {
+        serverLogger.log('info', 'Connected to MongoDB database');
+      },
+      () => {
+        serverLogger.log('error', 'Failed to connect to MongoDB database');
+      },
+    );
   }
 
   public async connect(): Promise<any> {
