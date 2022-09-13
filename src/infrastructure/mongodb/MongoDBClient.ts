@@ -12,10 +12,16 @@ export default class MongoDBClient implements IDatabaseClient {
   constructor() {
     this.connect().then(
       () => {
-        serverLogger.log('info', 'Connected to MongoDB database');
+        serverLogger.log(
+          'info',
+          `Connected to MongoDB database at ${this.uri}`,
+        );
       },
       () => {
-        serverLogger.log('error', 'Failed to connect to MongoDB database');
+        serverLogger.log(
+          'error',
+          `Failed to connect to MongoDB database at ${this.uri}`,
+        );
       },
     );
   }
