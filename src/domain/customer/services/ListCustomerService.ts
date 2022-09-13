@@ -13,7 +13,7 @@ export default class ListCustomerService implements IListCustomerService {
   public async readAll() {
     try {
       const allCustomers = await this.repository.readAll();
-      return { ...allCustomers };
+      return Object.assign({}, allCustomers);
     } catch (err) {
       throw this.readingError;
     }
