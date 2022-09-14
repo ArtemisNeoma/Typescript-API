@@ -15,6 +15,8 @@ export default class CustomerRepository implements IRepositoryCustomer {
     private dbClient: IDatabaseClient,
   ) {
     this.collection = dbClient.getInstance().collection('Customer');
+    this.collection.createIndex({ email: 1 }, { unique: true });
+    this.collection.createIndex({ cpf: 1 }, { unique: true });
   }
 
   public async create(entity: ICustomer) {
