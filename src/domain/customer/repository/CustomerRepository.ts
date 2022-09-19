@@ -31,7 +31,7 @@ export default class CustomerRepository implements IRepositoryCustomer {
     return await this.collection.find().toArray();
   }
 
-  public async update(id: number, newEntity: ICustomer) {
+  public async update(id: ObjectId, newEntity: ICustomer) {
     return await this.collection.updateOne({ _id: id }, newEntity);
   }
 
