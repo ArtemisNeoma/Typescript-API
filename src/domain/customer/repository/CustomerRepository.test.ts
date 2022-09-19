@@ -22,18 +22,8 @@ beforeEach(async () => {
 afterAll(async () => {
   await userRepository.dbClient.close();
 });
+
 describe('CustomerRepository', () => {
-  describe('getNewIndex', () => {
-    it('Should return 0 when calculating new index for an empty database', () => {
-      expect(userRepository.getNewIndex()).toBe(0);
-    });
-    it('Should return the biggest id + 1 (2+1=3) when calculating new index for a database', () => {
-      mockDatabaseGet.mockReturnValueOnce(
-        new Map<number, ICustomer>().set(0, mockCustomer).set(2, mockCustomer),
-      );
-      expect(userRepository.getNewIndex()).toBe(3);
-    });
-  });
   describe('create', () => {
     it('Should return new user when running the create method', () => {
       expect(userRepository.create(mockCustomer)).toEqual(mockCustomer);
