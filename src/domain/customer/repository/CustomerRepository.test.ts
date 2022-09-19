@@ -25,8 +25,12 @@ afterAll(async () => {
 
 describe('CustomerRepository', () => {
   describe('create', () => {
-    it('Should return new user when running the create method', () => {
-      expect(userRepository.create(mockCustomer)).toEqual(mockCustomer);
+    it('Should add new user with the id returned when running the create method', async () => {
+      const newUser = await userRepository.create(mockCustomer);
+      expect(newUser.acknowledged).toBe(true);
+      expect(await userRepository.read(newUser.insertedId)).toEqual(
+        mockCustomer,
+      );
     });
   });
 
