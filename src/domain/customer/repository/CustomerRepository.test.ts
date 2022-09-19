@@ -12,8 +12,11 @@ const mockDatabaseArr = [
 ];
 const mockCustomerUpdated = { email: 'test@test.com' } as unknown as ICustomer;
 
-beforeAll(() => {
-  mockCustomerUpdated.email = 'test@test.com';
+beforeEach(async () => {
+  await userRepository.dbClient
+    .getInstance()
+    .collection('Customer')
+    .deleteMany({});
 });
 
 beforeEach(() => {
