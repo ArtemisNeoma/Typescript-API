@@ -69,14 +69,20 @@ describe('CustomerRepository', () => {
     });
   });
   describe('delete', () => {
-    it('Should return true when deleting an entry that exists', () => {
-      mockDatabaseGet.mockReturnValue(
-        new Map<number, ICustomer>().set(0, mockCustomer),
+    it('Should return a deletedCount of 1 when deleting an entry that exists', async () => {
+      const { insertedId } = await userRepository.create(mockCustomer);
+      const { acknowledged, deletedCount } = await userRepository.delete(
+        insertedId,
       );
-      expect(userRepository.delete(0)).toBe(true);
+      expect(acknowledged).toBe(true);
+      expect(deletedCount).toBe(1);
     });
-    it("Should return false when deleting an entry that doesn't exists", () => {
-      expect(userRepository.delete(0)).toBe(false);
+    it("Should return a deletedCount of 0 when deleting an entry that doesn't exists", async () => {
+      const { acknowledged, deletedCount } = await userRepository.delete(
+        new ObjectId('aaaaaaaaaaaa'),
+      );
+      expect(acknowledged).toBe(true);
+      expect(deletedCount).toBe(0);
     });
   });
 });
