@@ -46,18 +46,14 @@ describe('CustomerRepository', () => {
     });
   });
   describe('readAll', () => {
-    it("Should return empty database when userRepository's database is empty", () => {
-      expect(userRepository.readAll()).toBe(userRepository.database);
+    it("Should return empty array when userRepository's database is empty", async () => {
+      expect(await userRepository.readAll()).toEqual([]);
     });
-
-    it("Should return filled database when userRepository's database is filled", () => {
-      mockDatabaseGet.mockReturnValue(
-        new Map<number, ICustomer>()
-          .set(0, mockCustomer)
-          .set(1, mockCustomer)
-          .set(2, mockCustomer),
-      );
-      expect(userRepository.readAll()).toBe(userRepository.database);
+    it('Should return array of customers when database has customers', async () => {
+      await userRepository.create(mockDatabaseArr[0]);
+      await userRepository.create(mockDatabaseArr[1]);
+      await userRepository.create(mockDatabaseArr[2]);
+      expect(await userRepository.readAll()).toEqual(mockDatabaseArr);
     });
   });
 
