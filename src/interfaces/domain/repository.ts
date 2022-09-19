@@ -15,5 +15,5 @@ export interface IEndPointsRepository {
   read(id: ObjectId): Promise<WithId<Document> | null>;
   update(id: ObjectId, newEntity: object): Promise<UpdateResult>;
   readAll(): Promise<ReadAllType>;
-  delete(id: number): Promise<DeleteResult>;
+  delete(id: ObjectId): Promise<DeleteResult>;
 }
