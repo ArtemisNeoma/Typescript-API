@@ -3,6 +3,7 @@ import {
   Document,
   InsertOneResult,
   ObjectId,
+  UpdateFilter,
   UpdateResult,
   WithId,
 } from 'mongodb';
@@ -13,7 +14,7 @@ export type ReadAllType = WithId<Document>[];
 export interface IEndPointsRepository {
   create(entity: object): Promise<InsertOneResult<Document>>;
   read(id: ObjectId): Promise<WithId<Document> | null>;
-  update(id: ObjectId, newEntity: object): Promise<UpdateResult>;
+  update(id: ObjectId, update: UpdateFilter<Document>): Promise<UpdateResult>;
   readAll(): Promise<ReadAllType>;
   delete(id: ObjectId): Promise<DeleteResult>;
 }
