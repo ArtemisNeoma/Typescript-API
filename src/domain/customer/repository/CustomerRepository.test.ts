@@ -10,7 +10,7 @@ const mockDatabaseArr = [
   { cpf: 1, email: '1' } as unknown as ICustomer,
   { cpf: 2, email: '2' } as unknown as ICustomer,
 ];
-const mockCustomerUpdated = {} as ICustomer;
+const mockCustomerUpdated = { email: 'test@test.com' } as unknown as ICustomer;
 
 beforeAll(() => {
   mockCustomerUpdated.email = 'test@test.com';
