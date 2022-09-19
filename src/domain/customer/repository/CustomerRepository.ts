@@ -4,7 +4,7 @@ import {
   ICustomer,
 } from '@interfaces/domain/customer/repository';
 import { IDatabaseClient } from '@interfaces/infrastructure';
-import { Collection, Document } from 'mongodb';
+import { Collection, Document, ObjectId } from 'mongodb';
 import { inject, injectable } from 'tsyringe';
 
 @injectable()
@@ -12,7 +12,7 @@ export default class CustomerRepository implements IRepositoryCustomer {
   private collection: Collection<Document>;
   constructor(
     @inject(tokens.DatabaseClient)
-    private dbClient: IDatabaseClient,
+    public dbClient: IDatabaseClient,
   ) {
     this.collection = dbClient.getInstance().collection('Customer');
     this.collection.createIndex({ email: 1 }, { unique: true });
@@ -23,7 +23,7 @@ export default class CustomerRepository implements IRepositoryCustomer {
     return await this.collection.insertOne(entity);
   }
 
-  public async read(id: number) {
+  public async read(id: ObjectId) {
     return await this.collection.findOne({ _id: id });
   }
 
