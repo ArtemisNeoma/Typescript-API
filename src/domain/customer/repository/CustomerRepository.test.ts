@@ -5,12 +5,12 @@ import CustomerRepository from './CustomerRepository';
 process.env.url = process.env.MONGO_URL;
 const userRepository = container.resolve(CustomerRepository);
 const mockCustomer = {} as ICustomer;
+const mockDatabaseArr = [
+  {} as ICustomer,
+  { cpf: 1, email: '1' } as unknown as ICustomer,
+  { cpf: 2, email: '2' } as unknown as ICustomer,
+];
 const mockCustomerUpdated = {} as ICustomer;
-const mockDatabaseGet = jest.spyOn(
-  CustomerRepository.prototype,
-  'database',
-  'get',
-);
 
 beforeAll(() => {
   mockCustomerUpdated.email = 'test@test.com';
