@@ -2,6 +2,7 @@ import container from '@di/index';
 import { ICustomer } from '@interfaces/domain/customer/repository';
 import CustomerRepository from './CustomerRepository';
 
+process.env.url = process.env.MONGO_URL;
 const userRepository = container.resolve(CustomerRepository);
 const mockCustomer = {} as ICustomer;
 const mockCustomerUpdated = {} as ICustomer;
