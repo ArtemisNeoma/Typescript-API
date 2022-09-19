@@ -19,8 +19,8 @@ beforeEach(async () => {
     .deleteMany({});
 });
 
-beforeEach(() => {
-  mockDatabaseGet.mockReturnValue(new Map<number, ICustomer>());
+afterAll(async () => {
+  await userRepository.dbClient.close();
 });
 describe('CustomerRepository', () => {
   describe('getNewIndex', () => {
