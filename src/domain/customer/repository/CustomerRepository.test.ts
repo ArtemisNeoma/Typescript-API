@@ -35,15 +35,14 @@ describe('CustomerRepository', () => {
   });
 
   describe('read', () => {
-    it('Should return the matching index user when index exists', () => {
-      mockDatabaseGet.mockReturnValueOnce(
-        new Map<number, ICustomer>().set(0, mockCustomer),
-      );
-      expect(userRepository.read(0)).toEqual(mockCustomer);
+    it('Should return the matching indexed user when index exists', async () => {
+      const { insertedId } = await userRepository.create(mockCustomer);
+      expect(await userRepository.read(insertedId)).toEqual(mockCustomer);
     });
-
-    it('Should return undefined when getting an absent index', () => {
-      expect(userRepository.read(0)).toEqual(undefined);
+    it('Should return null when getting an absent index', async () => {
+      expect(await userRepository.read(new ObjectId('aaaaaaaaaaaa'))).toEqual(
+        null,
+      );
     });
   });
   describe('readAll', () => {
