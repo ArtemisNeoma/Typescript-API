@@ -4,7 +4,7 @@ import {
   ICustomer,
 } from '@interfaces/domain/customer/repository';
 import { IDatabaseClient } from '@interfaces/infrastructure';
-import { Collection, Document, ObjectId } from 'mongodb';
+import { Collection, Document, ObjectId, UpdateFilter } from 'mongodb';
 import { inject, injectable } from 'tsyringe';
 
 @injectable()
@@ -31,8 +31,8 @@ export default class CustomerRepository implements IRepositoryCustomer {
     return await this.collection.find().toArray();
   }
 
-  public async update(id: ObjectId, newEntity: ICustomer) {
-    return await this.collection.updateOne({ _id: id }, newEntity);
+  public async update(id: ObjectId, update: UpdateFilter<Document>) {
+    return await this.collection.updateOne({ _id: id }, update);
   }
 
   public async delete(id: ObjectId) {
