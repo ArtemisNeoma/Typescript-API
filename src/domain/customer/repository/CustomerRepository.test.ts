@@ -58,13 +58,16 @@ describe('CustomerRepository', () => {
   });
 
   describe('update', () => {
-    it('Should return updated user when updating user', () => {
-      mockDatabaseGet.mockReturnValue(
-        new Map<number, ICustomer>().set(0, mockCustomer),
-      );
-      expect(userRepository.update(0, mockCustomerUpdated)).toBe(
-        mockCustomerUpdated,
-      );
+    it('Should modify informed user when updating user', async () => {
+      const { insertedId } = await userRepository.create(mockCustomer);
+      const { acknowledged } = await userRepository.update(insertedId, {
+        $set: { ...mockCustomerUpdated },
+      });
+      expect(acknowledged).toBe(true);
+      expect(await userRepository.read(insertedId)).toEqual({
+        ...{ _id: insertedId },
+        ...mockCustomerUpdated,
+      });
     });
   });
 
