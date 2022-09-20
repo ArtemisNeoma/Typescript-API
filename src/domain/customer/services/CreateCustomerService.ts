@@ -6,6 +6,7 @@ import {
   ICustomer,
 } from '@interfaces/domain/customer/repository';
 import { tokens } from '@di/tokens';
+import { Document, InsertOneResult } from 'mongodb';
 @injectable()
 export default class CreateCustomerService implements ICreateCustomerService {
   constructor(
@@ -15,9 +16,8 @@ export default class CreateCustomerService implements ICreateCustomerService {
     private validator: ICustomerValidator,
   ) {}
 
-  public async create(user: ICustomer): Promise<ICustomer> {
+  public async create(user: ICustomer): Promise<InsertOneResult<Document>> {
     await this.validator.validate(user);
-    await this.repository.create(user);
-    return user;
+    return await this.repository.create(user);
   }
 }
