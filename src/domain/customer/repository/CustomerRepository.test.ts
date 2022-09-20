@@ -3,7 +3,6 @@ import { ICustomer } from '@interfaces/domain/customer/repository';
 import { ObjectId } from 'mongodb';
 import CustomerRepository from './CustomerRepository';
 
-process.env.url = process.env.MONGO_URL;
 const userRepository = container.resolve(CustomerRepository);
 const mockCustomer = {} as ICustomer;
 const mockDatabaseArr = [
