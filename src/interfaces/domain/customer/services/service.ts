@@ -1,4 +1,4 @@
-import { Document, WithId } from 'mongodb';
+import { Document, InsertOneResult, WithId } from 'mongodb';
 import { ICustomer } from '../repository';
 
 export interface IDatabaseObject {
@@ -6,7 +6,7 @@ export interface IDatabaseObject {
 }
 
 export interface ICreateCustomerService {
-  create(user: ICustomer): Promise<ICustomer>;
+  create(user: ICustomer): Promise<InsertOneResult<Document>>;
 }
 
 export interface IListCustomerService {
