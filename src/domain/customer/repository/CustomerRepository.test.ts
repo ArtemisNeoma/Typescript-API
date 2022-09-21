@@ -1,13 +1,11 @@
 import container from '@di/index';
 import { tokens } from '@di/tokens';
-import MongoDBClient from '@infrastructure/mongodb/MongoDBClient';
 import {
   ICustomer,
   IRepositoryCustomer,
 } from '@interfaces/domain/customer/repository';
 import { IDatabaseClient } from '@interfaces/infrastructure';
 import { ObjectId } from 'mongodb';
-import CustomerRepository from './CustomerRepository';
 
 const userRepository = container.resolve<IRepositoryCustomer>(
   tokens.CustomerRepository,
