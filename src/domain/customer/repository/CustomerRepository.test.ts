@@ -22,10 +22,7 @@ const mockDatabaseArr = [
 const mockCustomerUpdated = { email: 'test@test.com' } as unknown as ICustomer;
 
 beforeEach(async () => {
-  await userRepository.dbClient
-    .getInstance()
-    .collection('Customer')
-    .deleteMany({});
+  await mongoClient.getInstance().collection('Customer').deleteMany({});
 });
 
 afterAll(async () => {
