@@ -34,25 +34,31 @@ afterAll(async () => {
 describe('CreateCustomerService', () => {
   describe('create', () => {
     it('Should resolve new user when input data is correct', async () => {
-      expect(await createCustomerService.create(newCustomer)).toEqual(
-        newCustomer,
+      expect(await createCustomerService.create(mockCustomer)).toEqual(
+        successCreateReturn,
       );
     });
 
     it('Should reject with error when validation fails', async () => {
-      spyValidator.mockImplementationOnce(() => Promise.reject(new Error()));
-      await expect(createCustomerService.create(newCustomer)).rejects.toEqual(
-        new Error(),
-      );
+      spyValidator.mockImplementationOnce(async () => {
+        throw new Error();
+      });
+      try {
+        await createCustomerService.create(mockCustomer);
+      } catch (err) {
+        expect(err).toEqual(new Error());
+      }
     });
 
     it('Should reject with error when repository fails', async () => {
-      spyRepository.mockImplementation(() => {
+      spyRepository.mockImplementation(async () => {
         throw new Error();
       });
-      await expect(createCustomerService.create(newCustomer)).rejects.toEqual(
-        new Error(),
-      );
+      try {
+        await createCustomerService.create(mockCustomer);
+      } catch (err) {
+        expect(err).toEqual(new Error());
+      }
     });
   });
 });
