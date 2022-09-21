@@ -5,7 +5,6 @@ import { ICreateCustomerService } from '@interfaces/domain/customer/services/ser
 import { IDatabaseClient } from '@interfaces/infrastructure';
 import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import CustomerRepository from '../repository/CustomerRepository';
-import CreateCustomerService from './CreateCustomerService';
 import CustomerValidator from './helpers/CustomerValidator';
 
 const mockCustomer: ICustomer = {} as ICustomer;
