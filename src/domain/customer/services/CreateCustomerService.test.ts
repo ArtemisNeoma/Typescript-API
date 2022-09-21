@@ -1,15 +1,24 @@
 import container from '@di/index';
+import { tokens } from '@di/tokens';
 import { ICustomer } from '@interfaces/domain/customer/repository';
+import { ICreateCustomerService } from '@interfaces/domain/customer/services/service';
+import { IDatabaseClient } from '@interfaces/infrastructure';
+import { Document, InsertOneResult, ObjectId } from 'mongodb';
 import CustomerRepository from '../repository/CustomerRepository';
 import CreateCustomerService from './CreateCustomerService';
 import CustomerValidator from './helpers/CustomerValidator';
 
-const newCustomer: ICustomer = {} as ICustomer;
-describe('CreateCustomerService', () => {
-  describe('create', () => {
-    const createCustomerService = container.resolve(CreateCustomerService);
-    const spyRepository = jest
-      .spyOn(CustomerRepository.prototype, 'create')
+const mockCustomer: ICustomer = {} as ICustomer;
+const mongoClient = container.resolve<IDatabaseClient>(tokens.DatabaseClient);
+const successCreateReturn: InsertOneResult<Document> = {
+  acknowledged: true,
+  insertedId: new ObjectId('aaaaaaaaaaaa'),
+};
+const createCustomerService = container.resolve<ICreateCustomerService>(
+  tokens.CreateCustomerService,
+);
+const spyRepository = jest
+  .spyOn(CustomerRepository.prototype, 'create')
       .mockReturnValue(newCustomer);
     const spyValidator = jest
       .spyOn(CustomerValidator.prototype, 'validate')
