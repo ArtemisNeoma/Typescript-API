@@ -33,7 +33,7 @@ afterAll(async () => {
 
 describe('CreateCustomerService', () => {
   describe('create', () => {
-    it('Should resolve new user when input data is correct', async () => {
+    it('Should resolve acknowledged and insertedId when sending a new correct user', async () => {
       expect(await createCustomerService.create(mockCustomer)).toEqual(
         successCreateReturn,
       );
