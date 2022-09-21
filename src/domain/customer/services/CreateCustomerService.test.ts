@@ -23,6 +23,16 @@ const spyRepository = jest
 const spyValidator = jest
   .spyOn(CustomerValidator.prototype, 'validate')
   .mockResolvedValue();
+
+beforeEach(async () => {
+  await mongoClient.getInstance().collection('Customer').deleteMany({});
+});
+afterAll(async () => {
+  await mongoClient.close();
+});
+
+describe('CreateCustomerService', () => {
+  describe('create', () => {
     it('Should resolve new user when input data is correct', async () => {
       expect(await createCustomerService.create(newCustomer)).toEqual(
         newCustomer,
