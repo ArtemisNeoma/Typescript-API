@@ -19,11 +19,10 @@ const createCustomerService = container.resolve<ICreateCustomerService>(
 );
 const spyRepository = jest
   .spyOn(CustomerRepository.prototype, 'create')
-      .mockReturnValue(newCustomer);
-    const spyValidator = jest
-      .spyOn(CustomerValidator.prototype, 'validate')
-      .mockResolvedValue();
-
+  .mockResolvedValue(successCreateReturn);
+const spyValidator = jest
+  .spyOn(CustomerValidator.prototype, 'validate')
+  .mockResolvedValue();
     it('Should resolve new user when input data is correct', async () => {
       expect(await createCustomerService.create(newCustomer)).toEqual(
         newCustomer,
