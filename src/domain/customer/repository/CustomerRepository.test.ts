@@ -1,9 +1,18 @@
 import container from '@di/index';
-import { ICustomer } from '@interfaces/domain/customer/repository';
+import { tokens } from '@di/tokens';
+import MongoDBClient from '@infrastructure/mongodb/MongoDBClient';
+import {
+  ICustomer,
+  IRepositoryCustomer,
+} from '@interfaces/domain/customer/repository';
+import { IDatabaseClient } from '@interfaces/infrastructure';
 import { ObjectId } from 'mongodb';
 import CustomerRepository from './CustomerRepository';
 
-const userRepository = container.resolve(CustomerRepository);
+const userRepository = container.resolve<IRepositoryCustomer>(
+  tokens.CustomerRepository,
+);
+const mongoClient = container.resolve<IDatabaseClient>(tokens.DatabaseClient);
 const mockCustomer = {} as ICustomer;
 const mockDatabaseArr = [
   {} as ICustomer,
@@ -20,7 +29,7 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  await userRepository.dbClient.close();
+  await mongoClient.close();
 });
 
 describe('CustomerRepository', () => {
