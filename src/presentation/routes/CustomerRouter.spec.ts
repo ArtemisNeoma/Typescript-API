@@ -21,9 +21,7 @@ const spyRepository = {
 beforeEach(() => {
   spyRepository.readAll.mockReset();
   spyRepository.create.mockClear();
-  spyRepository.readAll.mockImplementation(() => {
-    return mockDatabase;
-  });
+  spyRepository.readAll.mockImplementation(async () => []);
 });
 
 describe('Route /customer', () => {
@@ -39,7 +37,7 @@ describe('Route /customer', () => {
     };
 
     it('Should return all customers when reading works correctly', async () => {
-      spyRepository.readAll.mockImplementation(() => {
+      spyRepository.readAll.mockImplementation(async () => {
         return mockDatabase;
       });
       const res = await request(app).get('/customer');
@@ -49,7 +47,7 @@ describe('Route /customer', () => {
     });
 
     it('Should return reading error when readAll fails', async () => {
-      spyRepository.readAll.mockImplementationOnce(() => {
+      spyRepository.readAll.mockImplementationOnce(async () => {
         throw new Error('');
       });
       const res = await request(app).get('/customer');
