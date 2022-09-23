@@ -5,6 +5,10 @@ import { IDatabaseObject } from '@interfaces/domain/customer/services/service';
 import ListCustomerService from '@domain/customer/services/ListCustomerService';
 import ListCustomerController from './ListCustomerController';
 import { ReadAllType } from '@interfaces/domain/repository';
+import { IDatabaseClient } from '@interfaces/infrastructure';
+import { tokens } from '@di/tokens';
+
+const mongoClient = container.resolve<IDatabaseClient>(tokens.DatabaseClient);
 
 const mockReturn = {} as ReadAllType;
 const req = {} as Request;
@@ -20,6 +24,10 @@ beforeAll(() => {
   req.body = mockReturn;
   res.status = jest.fn().mockImplementation(() => res);
   res.json = jest.fn().mockImplementation(() => res);
+});
+
+afterAll(async () => {
+  mongoClient.close();
 });
 
 describe('ListCustomerController', () => {
