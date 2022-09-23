@@ -13,16 +13,18 @@ import {
 } from './mocks/CustomerRouter.mock';
 import { ICustomer } from '@interfaces/domain/customer/repository';
 import { Document, InsertOneResult, ObjectId } from 'mongodb';
+import container from '@di/index';
+import { IDatabaseClient } from '@interfaces/infrastructure';
+import { tokens } from '@di/tokens';
 
-const spyRepository = {
-  readAll: jest.spyOn(CustomerRepository.prototype, 'readAll'),
-  create: jest.spyOn(CustomerRepository.prototype, 'create'),
-};
+const mongoClient = container.resolve<IDatabaseClient>(tokens.DatabaseClient);
 
-beforeEach(() => {
-  spyRepository.readAll.mockReset();
-  spyRepository.create.mockClear();
-  spyRepository.readAll.mockImplementation(async () => []);
+beforeEach(async () => {
+  await mongoClient.getInstance().collection('Customer').deleteMany({});
+});
+
+afterAll(async () => {
+  await mongoClient.close();
 });
 
 describe('Route /customer', () => {
@@ -82,10 +84,6 @@ describe('Route /customer', () => {
       'email',
       'full_name',
     ];
-
-    spyRepository.readAll.mockImplementation(async () => {
-      return mockDatabase;
-    });
 
     it('Should respond with sanitized user json when creating valid user', async () => {
       const res = await request(app).post('/customer').send(mockValidCustomer);
