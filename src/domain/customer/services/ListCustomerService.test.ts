@@ -5,12 +5,20 @@ import { IDatabaseClient } from '@interfaces/infrastructure';
 import { Document, WithId } from 'mongodb';
 import CustomerRepository from '../repository/CustomerRepository';
 
-const mockCustomer = {} as ICustomer;
-const databaseMock: IVariableDatabase = new Map<number, ICustomer>().set(
-  0,
-  mockCustomer,
+const mongoClient = container.resolve<IDatabaseClient>(tokens.DatabaseClient);
+const listCustomerService = container.resolve<IListCustomerService>(
+  tokens.ListCustomerService,
 );
-const listCustomerService = container.resolve(ListCustomerService);
+const mockEntry = {} as WithId<Document>;
+const spyRepository = jest
+  .spyOn(CustomerRepository.prototype, 'readAll')
+  .mockResolvedValue([mockEntry, mockEntry]);
+beforeEach(async () => {
+  await mongoClient.getInstance().collection('Customer').deleteMany({});
+});
+afterAll(async () => {
+  await mongoClient.close();
+});
 
 describe('ListCustomerService', () => {
   describe('listAll', () => {
