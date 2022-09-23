@@ -27,13 +27,14 @@ describe('ListCustomerService', () => {
         0: mockEntry,
         1: mockEntry,
       });
-    it('Should throw error when CustomerRepository fails', () => {
-      jest
-        .spyOn(CustomerRepository.prototype, 'readAll')
-        .mockImplementation(() => {
-          throw new Error();
-        });
-      expect(() => listCustomerService.readAll()).toThrow();
+    });
+    it('Should throw error when CustomerRepository fails', async () => {
+      spyRepository.mockRejectedValue(new Error());
+      try {
+        await listCustomerService.readAll();
+      } catch (err) {
+        expect(err).toEqual(new Error('Failed to readAll database'));
+      }
     });
   });
 });
