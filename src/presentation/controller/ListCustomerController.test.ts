@@ -24,17 +24,17 @@ beforeAll(() => {
 describe('ListCustomerController', () => {
   describe('handle', () => {
     const listCustomerController = container.resolve(ListCustomerController);
-    it('Should send users json with status code 200 when services succeds', () => {
+    it('Should send users json with status code 200 when services succeds', async () => {
       spyListCustomerService.mockReturnValue(databaseMock);
-      listCustomerController.handle(req, res, next);
+      await listCustomerController.handle(req, res, next);
       expect(res.json).toBeCalledWith({ message: databaseMock });
       expect(res.status).toBeCalledWith(200);
     });
     it('Should run next with error when service fails', async () => {
-      spyListCustomerService.mockImplementation(() => {
+      spyListCustomerService.mockImplementation(async () => {
         throw error;
       });
-      listCustomerController.handle(req, res, next);
+      await listCustomerController.handle(req, res, next);
       expect(next).toHaveBeenCalledWith(new StatusError(500, `${error}`));
     });
   });
