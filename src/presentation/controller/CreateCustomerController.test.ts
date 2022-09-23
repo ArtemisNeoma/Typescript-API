@@ -14,7 +14,7 @@ const mockReturn = {} as InsertOneResult<Document>;
 const req = {} as Request;
 const res = {} as Response;
 const next = jest.fn() as NextFunction;
-const spyCreateCustomerController = jest.spyOn(
+const spyCreateCustomerService = jest.spyOn(
   CreateCustomerService.prototype,
   'create',
 );
@@ -39,7 +39,7 @@ describe('CreateCustomerController', () => {
       CreateCustomerController,
     );
     it('Should create user when all fields are correct', async () => {
-      spyCreateCustomerController.mockResolvedValue(mockReturn);
+      spyCreateCustomerService.mockResolvedValue(mockReturn);
       await createCustomerController.handle(req, res, next);
       expect(res.status).toBeCalled();
       expect(res.status).toHaveBeenCalledWith(201);
@@ -47,7 +47,7 @@ describe('CreateCustomerController', () => {
 
     it('Should run next with error when user is incorrect', async () => {
       const error = new Error();
-      spyCreateCustomerController.mockRejectedValue(error);
+      spyCreateCustomerService.mockRejectedValue(error);
       await createCustomerController.handle(req, res, next);
       expect(next).toBeCalled();
       expect(next).toHaveBeenCalledWith(new StatusError(422, `${error}`));
