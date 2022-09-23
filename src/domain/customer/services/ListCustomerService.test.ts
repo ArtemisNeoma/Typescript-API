@@ -1,8 +1,9 @@
 import container from '@di/index';
-import { IVariableDatabase } from '@interfaces/domain/repository';
-import { ICustomer } from '@interfaces/domain/customer/repository';
+import { tokens } from '@di/tokens';
+import { IListCustomerService } from '@interfaces/domain/customer/services/service';
+import { IDatabaseClient } from '@interfaces/infrastructure';
+import { Document, WithId } from 'mongodb';
 import CustomerRepository from '../repository/CustomerRepository';
-import ListCustomerService from './ListCustomerService';
 
 const mockCustomer = {} as ICustomer;
 const databaseMock: IVariableDatabase = new Map<number, ICustomer>().set(
