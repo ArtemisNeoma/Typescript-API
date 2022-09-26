@@ -18,6 +18,13 @@ import { IDatabaseClient } from '@interfaces/infrastructure';
 import { tokens } from '@di/tokens';
 
 const mongoClient = container.resolve<IDatabaseClient>(tokens.DatabaseClient);
+const customerCollection = mongoClient.getInstance().collection('Customer');
+
+const spyRepositoryReadAll = jest.spyOn(
+  CustomerRepository.prototype,
+  'readAll',
+);
+const spyRepositoryCreate = jest.spyOn(CustomerRepository.prototype, 'create');
 
 beforeEach(async () => {
   await mongoClient.getInstance().collection('Customer').deleteMany({});
