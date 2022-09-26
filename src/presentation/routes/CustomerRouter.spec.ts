@@ -61,6 +61,7 @@ describe('Route /customer', () => {
     });
 
     it('Should return reading error when readAll fails', async () => {
+      spyRepositoryReadAll.mockRejectedValue(new Error());
       const res = await request(app).get('/customer');
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(500);
