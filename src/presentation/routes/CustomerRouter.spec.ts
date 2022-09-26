@@ -36,9 +36,11 @@ afterAll(async () => {
 
 describe('Route /customer', () => {
   describe('GET /customer', () => {
+    const id = new ObjectId('aaaaaaaaaaaa');
     const expectedResults: Record<string, object | string> = {
       listJson: {
         0: {
+          _id: '616161616161616161616161',
           email: mEmailRepeatedCustomer.email,
           cpf: mCpfRepeatedCustomer.cpf,
         },
@@ -47,6 +49,11 @@ describe('Route /customer', () => {
     };
 
     it('Should return all customers when reading works correctly', async () => {
+      await customerCollection.insertOne({
+        _id: id,
+        email: mEmailRepeatedCustomer.email,
+        cpf: mCpfRepeatedCustomer.cpf,
+      });
       const res = await request(app).get('/customer');
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(200);
