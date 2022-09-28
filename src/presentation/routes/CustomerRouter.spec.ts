@@ -39,7 +39,7 @@ describe('Route /customer', () => {
     const expectedResults: Record<string, object | string> = {
       listJson: {
         0: {
-          _id: '616161616161616161616161',
+          _id: mockValidCustomer._id !== undefined ? mockValidCustomer._id : '',
           email: mEmailRepeatedCustomer.email,
           cpf: mCpfRepeatedCustomer.cpf,
         },
