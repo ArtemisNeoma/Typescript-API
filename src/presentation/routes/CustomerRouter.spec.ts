@@ -117,7 +117,7 @@ describe('Route /customer', () => {
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(422);
       expect(res.body.error).toEqual(
-        `Error: CPF ${expectedResults.repeatedCpf} already exists`,
+        `MongoServerError: E11000 duplicate key error collection: typescript_api.Customer index: cpf_1 dup key: { cpf: \"${expectedResults.repeatedCpf}" }`,
       );
     });
 
