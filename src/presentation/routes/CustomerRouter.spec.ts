@@ -101,9 +101,12 @@ describe('Route /customer', () => {
 
     it('Should respond with sanitized user json when creating valid user', async () => {
       const res = await request(app).post('/customer').send(mockValidCustomer);
+      const insertedId: string = res.body.message.insertedId;
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(201);
-      expect(res.body.message).toEqual(expectedResults.newCustomer);
+      expect(await customerCollection.findOne({ _id: insertedId })).toEqual(
+        expectedResults.newCustomer,
+      );
     });
 
     it('Should respond with error when cpf already exists', async () => {
