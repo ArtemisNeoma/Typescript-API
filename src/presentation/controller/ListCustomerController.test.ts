@@ -20,14 +20,18 @@ const spyListCustomerService = jest.spyOn(
   'readAll',
 );
 
-beforeAll(() => {
+beforeAll(async () => {
   req.body = mockReturn;
   res.status = jest.fn().mockImplementation(() => res);
   res.json = jest.fn().mockImplementation(() => res);
 });
 
+beforeEach(async () => {
+  await mongoClient.getInstance().collection('Customer').deleteMany({});
+});
+
 afterAll(async () => {
-  mongoClient.close();
+  await mongoClient.close();
 });
 
 describe('ListCustomerController', () => {
