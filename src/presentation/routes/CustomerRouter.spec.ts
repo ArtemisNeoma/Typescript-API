@@ -24,7 +24,6 @@ const spyRepositoryReadAll = jest.spyOn(
   CustomerRepository.prototype,
   'readAll',
 );
-const spyRepositoryCreate = jest.spyOn(CustomerRepository.prototype, 'create');
 
 beforeEach(async () => {
   await mongoClient.getInstance().collection('Customer').deleteMany({});
