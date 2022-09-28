@@ -131,7 +131,7 @@ describe('Route /customer', () => {
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(422);
       expect(res.body.error).toEqual(
-        `Error: Email ${expectedResults.repeatedEmail} already exists`,
+        `MongoServerError: E11000 duplicate key error collection: typescript_api.Customer index: email_1 dup key: { email: \"${expectedResults.repeatedEmail}" }`,
       );
     });
 
