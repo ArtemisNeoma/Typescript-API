@@ -74,7 +74,7 @@ describe('Route /customer', () => {
         ...mockValidCustomer,
         cpf: '12345678909',
         cellphone: '47991234567',
-        birthdate: '2000-01-01T00:00:00.000Z',
+        birthdate: new Date('2000-01-01'),
         postal_code: '89010203',
       },
       repeatedCpf: '19087282052',
