@@ -69,7 +69,7 @@ describe('Route /customer', () => {
   });
 
   describe('POST /customer', () => {
-    const expectedResults: Record<string, ICustomer | string> = {
+    const expectedResults: Record<string, string | object> = {
       newCustomer: {
         ...mockValidCustomer,
         cpf: '12345678909',
