@@ -8,6 +8,7 @@ import {
 import { IEndPointsRepository } from '../repository';
 
 export interface ICustomer {
+  _id?: ObjectId;
   full_name: string;
   email: string;
   email_confirmation: string;
