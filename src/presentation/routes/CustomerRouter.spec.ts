@@ -110,6 +110,7 @@ describe('Route /customer', () => {
     });
 
     it('Should respond with error when cpf already exists', async () => {
+      await customerCollection.insertOne({ cpf: mCpfRepeatedCustomer.cpf });
       const res = await request(app)
         .post('/customer')
         .send(mCpfRepeatedCustomer);
@@ -121,6 +122,9 @@ describe('Route /customer', () => {
     });
 
     it('Should respond with error when email already exists', async () => {
+      await customerCollection.insertOne({
+        email: mEmailRepeatedCustomer.email,
+      });
       const res = await request(app)
         .post('/customer')
         .send(mEmailRepeatedCustomer);
