@@ -2,6 +2,7 @@ import { ICustomer } from '@interfaces/domain/customer/repository';
 import { Document, ObjectId, WithId } from 'mongodb';
 
 export const mockValidCustomer = {
+  _id: new ObjectId('aaaaaaaaaaaa').toJSON(),
   full_name: 'Teste do Teste',
   email: 'test@test.com',
   email_confirmation: 'test@test.com',
