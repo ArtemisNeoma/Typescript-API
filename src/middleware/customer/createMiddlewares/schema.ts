@@ -15,6 +15,7 @@ const emailValidation = (name: string): StringSchema =>
 
 const userCreateSchema: ISchema<ICustomer> = object
   .keys({
+    _id: numberStringValidation({ name: '_id', min: 24, max: 24 }),
     full_name: stringValidation({
       name: 'full_name',
       min: 1,
