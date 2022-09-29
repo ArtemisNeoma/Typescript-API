@@ -21,6 +21,7 @@ describe('ListCustomerService', () => {
         Object.fromEntries(databaseMock),
       );
     });
+
     it('Should throw error when CustomerRepository fails', () => {
       jest
         .spyOn(CustomerRepository.prototype, 'readAll')

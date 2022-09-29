@@ -31,6 +31,7 @@ describe('CreateCustomerController', () => {
       expect(res.status).toBeCalled();
       expect(res.status).toHaveBeenCalledWith(201);
     });
+
     it('Should run next with error when user is incorrect', async () => {
       const error = new Error();
       spyCreateCustomerController.mockRejectedValue(error);

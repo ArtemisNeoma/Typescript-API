@@ -30,6 +30,7 @@ describe('ListCustomerController', () => {
       expect(res.json).toBeCalledWith({ message: databaseMock });
       expect(res.status).toBeCalledWith(200);
     });
+
     it('Should run next with error when service fails', async () => {
       spyListCustomerService.mockImplementation(() => {
         throw error;
