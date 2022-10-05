@@ -1,6 +1,6 @@
-import { IUser } from './user/repository';
+import { ICustomer } from './customer/repository';
 
-export type IVariableDatabase = Map<number, IUser>;
+export type IVariableDatabase = Map<number, ICustomer>;
 
 export interface IEndPointsRepository {
   create(entity: object): object | undefined;

@@ -1,0 +1,196 @@
+openapi: 3.0.0
+info:
+  title: Typescript REST API
+  description: |-
+    This is a learning project at Warren Brasil from the Everest Squad for the Backend NodeJS developers using Typescript and ExpressJS.
+    
+    Currently implements basic CRUD methods of creating and listing customers and close to 100% tests coverage with Jest and Supertest.
+
+    ## Dependencies
+    These are the production dependencies of the project: 
+      - **axios**
+      - **dotenv**
+      - **express**
+      - **helmet**
+      - **joi**
+      - **reflect-metadata**
+      - **sanitize-html**
+      - **swagger-ui-express**
+      - **tsconfig-paths**
+      - **tsyringe**
+      - **winston**
+      - **yamljs**
+    
+    ## Running the Project
+    The project can be runned by installing the dependencies with `yarn install` on the base directory and then running `yarn dev:server`, and for testing, you use `yarn jest`.
+servers:
+  - url: https://localhost:3000
+    description: Internal Server for Development
+
+tags: 
+  - name: customer
+    description: Actions related to customers (one or all)
+paths:
+  /customer:
+    get:
+      tags:
+        - customer
+      summary: Returns all customers
+      description: Returns all of the customers currently registered in the database
+      responses:
+        '200': 
+          description: "Successfully returned all customers"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customers'
+        '500':
+          description: "Failed to read users from database"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponseBody'
+                properties:
+                  message:
+                    example: 'Error: Failed to readAll database'
+    post:
+      tags:
+        - customer
+      summary: Creates a new customer
+      description: Receives, validates and creates a new customer and returns it as a json
+      requestBody:
+        description: New user to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: Successfully created a new user
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponseBody'
+                properties:
+                  message:
+                    $ref: '#/components/schemas/ResponseCustomer'
+        '422':
+          description: Invalid Input
+
+components:
+  schemas:
+    ApiResponseBody:
+      type: object
+      properties:
+        message:
+          oneOf:
+            - type: string
+            - type: object
+    BaseCustomer:
+      type: object
+      properties:
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 256
+          example: Teste do Teste
+        email: 
+          type: string
+          format: email
+          minLength: 1
+          maxLenght: 256
+          example: test@test.com
+        email_confirmation:
+          allOf:
+            - $ref: '#/components/schemas/BaseCustomer/properties/email'
+        cpf: 
+          type: string
+          format: numeric
+          minLength: 11
+        cellphone:
+          type: string
+          format: numeric
+          minLength: 11
+        birthdate:
+          type: string
+          format: date-time
+          maxLenght: now
+        email_sms:
+          type: boolean
+          example: false
+        whatsapp:
+          type: boolean
+          example: false
+        country:
+          type: string
+          minLength: 1
+          maxLength: 256
+          example: Brazil
+        city:
+          type: string
+          minLength: 1
+          maxLength: 256
+          example: Blumenau
+        postal_code:
+          type: string
+          format: numeric
+          minLength: 8
+        address:
+          type: string
+          minLength: 1
+          maxLenght: 256
+          example: 'Rua X, 001, Itoupava'
+      required:
+        - full_name
+        - email
+        - email_confirmation
+        - cpf
+        - cellphone
+        - birthdate
+        - email_sms
+        - whatsapp
+        - country
+        - city
+        - postal_code
+        - address
+    Customer:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCustomer'
+      properties:
+        cpf: 
+          maxLenght: 14
+          example: 123.456.789-09
+        cellphone:
+          maxLenght: 15
+          example: (47) 99123-4567
+        birthdate:
+          format: date
+          example: 2000-01-01
+        postal_code:
+          maxLenght: 9
+          example: 89010-203
+    ResponseCustomer:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCustomer'
+      properties:
+        cpf: 
+          maxLenght: 11
+          example: 12345678909
+        cellphone:
+          maxLenght: 11
+          example: 47991234567
+        birthdate:
+          example: 2000-01-01T00:00:00.000Z
+        postal_code:
+          maxLenght: 8
+          example: 89010203
+    Customers:
+      type: object
+      properties: 
+        number_id:
+          type: string
+          $ref: '#/components/schemas/ResponseCustomer'

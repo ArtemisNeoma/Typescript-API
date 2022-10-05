@@ -1,54 +1,87 @@
-import UserRepository from '@domain/user/repository/UserRepository';
-import CreateUserService from '@domain/user/services/CreateUserService';
-import checkUnique from '@domain/user/services/helpers/checkUnique';
-import UserValidator from '@domain/user/services/helpers/UserValidator';
-import ListUserService from '@domain/user/services/ListUserService';
+import CustomerRepository from '@domain/customer/repository/CustomerRepository';
+import CreateCustomerService from '@domain/customer/services/CreateCustomerService';
+import checkUnique from '@domain/customer/services/helpers/checkUnique';
+import CustomerValidator from '@domain/customer/services/helpers/CustomerValidator';
+import ListCustomerService from '@domain/customer/services/ListCustomerService';
 import {
-  ICreateUserService,
-  IListUserService,
-} from '@interfaces/domain/user/services/service';
-import { IUserValidator } from '@interfaces/domain/user/services/validation';
+  ICreateCustomerService,
+  IListCustomerService,
+} from '@interfaces/domain/customer/services/service';
+import { ICustomerValidator } from '@interfaces/domain/customer/services/validation';
 import { ControllerAdapterType, MiddlewareArray } from '@interfaces/middleware';
 import { IEndPointsController } from '@interfaces/presentation/controller';
 import controllerAdapter from '@middleware/controllerAdapter';
-import createUserMiddlewares from '@middleware/user/createMiddlewares';
+import createCustomerMiddlewares from '@middleware/customer/createMiddlewares';
 import isCpfValid from '@util/validation/Cpf/isCpfValid';
 import { Router } from 'express';
-import CreateUserController from '@presentation/controller/CreateUserController';
-import ListUserController from '@presentation/controller/ListUserController';
+import CreateCustomerController from '@presentation/controller/CreateCustomerController';
+import ListCustomerController from '@presentation/controller/ListCustomerController';
 import { container } from 'tsyringe';
-import { IRepositoryUser } from '@interfaces/domain/user/repository';
+import { IRepositoryCustomer } from '@interfaces/domain/customer/repository';
 import getCep from '@services/cep/getCep';
+import { tokens } from './tokens';
+import { DocsService } from '@infrastructure/docs/DocsService';
+import { DocsController } from '@presentation/http/controllers/DocsController';
+import CustomerRouter from '@presentation/routes/CustomerRouter';
+import DocsRouter from '@presentation/http/DocsRouter';
+import MainRouter from '@presentation/routes';
 
-container.register<Router>('FrameworkRouter', { useValue: Router() });
+container.registerSingleton<MainRouter>(tokens.MainRouter, MainRouter);
+
+container.registerSingleton<CustomerRouter>(
+  tokens.CustomerRouter,
+  CustomerRouter,
+);
+
+container.registerSingleton<DocsRouter>(tokens.DocsRouter, DocsRouter);
+
+container.register<Router>(tokens.FrameworkRouter, { useValue: Router() });
 container.registerSingleton<IEndPointsController>(
-  'CreateUserController',
-  CreateUserController,
+  tokens.CreateCustomerController,
+  CreateCustomerController,
 );
 container.registerSingleton<IEndPointsController>(
-  'ListUserController',
-  ListUserController,
+  tokens.ListCustomerController,
+  ListCustomerController,
 );
-container.register<MiddlewareArray>('CreateUserMiddlewares', {
-  useValue: createUserMiddlewares,
+container.register<MiddlewareArray>(tokens.CreateCustomerMiddlewares, {
+  useValue: createCustomerMiddlewares,
 });
-container.register<ControllerAdapterType>('ControllerAdapter', {
+container.register<ControllerAdapterType>(tokens.ControllerAdapter, {
   useValue: controllerAdapter,
 });
 
-container.register<ICreateUserService>('CreateUserService', CreateUserService);
-container.register<IListUserService>('ListUserService', ListUserService);
+container.registerSingleton<DocsController>(
+  tokens.DocsController,
+  DocsController,
+);
 
-container.registerSingleton<IRepositoryUser>('UserRepository', UserRepository);
-container.registerSingleton<IUserValidator>('UserValidator', UserValidator);
+container.registerSingleton<ICreateCustomerService>(
+  tokens.CreateCustomerService,
+  CreateCustomerService,
+);
+container.registerSingleton<IListCustomerService>(
+  tokens.ListCustomerService,
+  ListCustomerService,
+);
+container.registerSingleton<DocsService>(tokens.DocsService, DocsService);
 
-container.register('getCep', {
+container.registerSingleton<IRepositoryCustomer>(
+  tokens.CustomerRepository,
+  CustomerRepository,
+);
+container.registerSingleton<ICustomerValidator>(
+  tokens.CustomerValidator,
+  CustomerValidator,
+);
+
+container.register(tokens.getCep, {
   useValue: getCep,
 });
-container.register('isCpfValid', {
+container.register(tokens.isCpfValid, {
   useValue: isCpfValid,
 });
-container.register('checkUnique', {
+container.register(tokens.checkUnique, {
   useValue: checkUnique,
 });
 
