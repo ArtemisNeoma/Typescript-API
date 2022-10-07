@@ -20,22 +20,22 @@ export default class CustomerRepository implements IRepositoryCustomer {
   }
 
   public async create(entity: ICustomer) {
-    return await this.collection.insertOne(entity);
+    return this.collection.insertOne(entity);
   }
 
   public async read(_id: ObjectId) {
-    return await this.collection.findOne({ _id });
+    return this.collection.findOne({ _id });
   }
 
   public async readAll() {
-    return await this.collection.find().toArray();
+    return this.collection.find().toArray();
   }
 
   public async update(_id: ObjectId, update: UpdateFilter<Document>) {
-    return await this.collection.updateOne({ _id }, update);
+    return this.collection.updateOne({ _id }, update);
   }
 
   public async delete(_id: ObjectId) {
-    return await this.collection.deleteOne({ _id });
+    return this.collection.deleteOne({ _id });
   }
 }
