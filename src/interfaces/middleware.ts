@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { AnySchema } from 'joi';
 import { IEndPointsController } from './presentation/controller';
 
-export interface ISchema<Target> {
+export interface ISchema<Target> extends AnySchema {
   validateAsync(value: Target, ...args: any[]): Promise<Target>;
 }
 export interface IContextFieldOptions {
