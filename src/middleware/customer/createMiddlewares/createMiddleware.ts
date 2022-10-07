@@ -7,8 +7,8 @@ export const createMiddleware: RouteMiddleware =
   (schema: AnySchema) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const validateBody = await schema.validateAsync(req.body);
-      req.body = validateBody;
+      const validBody = await schema.validateAsync(req.body);
+      Object.assign(req.body, validBody);
       next();
     } catch (error) {
       next(new StatusError(422, `${error}`));
