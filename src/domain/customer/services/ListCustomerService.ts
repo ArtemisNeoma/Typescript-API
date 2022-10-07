@@ -1,9 +1,6 @@
 import { tokens } from '@di/tokens';
 import { IRepositoryCustomer } from '@interfaces/domain/customer/repository';
-import {
-  IDatabaseObject,
-  IListCustomerService,
-} from '@interfaces/domain/customer/services/service';
+import { IListCustomerService } from '@interfaces/domain/customer/services/service';
 import { inject, injectable } from 'tsyringe';
 @injectable()
 export default class ListCustomerService implements IListCustomerService {
@@ -13,10 +10,10 @@ export default class ListCustomerService implements IListCustomerService {
     private repository: IRepositoryCustomer,
   ) {}
 
-  public readAll(): IDatabaseObject {
+  public async readAll() {
     try {
-      const allCustomers = this.repository.readAll();
-      return Object.fromEntries(allCustomers);
+      const allCustomers = await this.repository.readAll();
+      return Object.assign({}, allCustomers);
     } catch (err) {
       throw this.readingError;
     }

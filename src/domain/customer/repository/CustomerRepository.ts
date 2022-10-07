@@ -1,44 +1,41 @@
-import AbstractRepository from '@domain/AbstractRepository';
+import { tokens } from '@di/tokens';
 import {
   IRepositoryCustomer,
   ICustomer,
 } from '@interfaces/domain/customer/repository';
-import { IVariableDatabase } from 'interfaces/domain/repository';
-import { injectable } from 'tsyringe';
+import { IDatabaseClient } from '@interfaces/infrastructure';
+import { Collection, Document } from 'mongodb';
+import { inject, injectable } from 'tsyringe';
 
 @injectable()
-export default class CustomerRepository
-  extends AbstractRepository
-  implements IRepositoryCustomer
-{
-  public getNewIndex(): number {
-    const idArray = Array.from(this.database.keys());
-    if (idArray.length === 0) {
-      return 0;
-    }
-    return Math.max(...idArray) + 1;
+export default class CustomerRepository implements IRepositoryCustomer {
+  private collection: Collection<Document>;
+  constructor(
+    @inject(tokens.DatabaseClient)
+    private dbClient: IDatabaseClient,
+  ) {
+    this.collection = dbClient.getInstance().collection('Customer');
+    this.collection.createIndex({ email: 1 }, { unique: true });
+    this.collection.createIndex({ cpf: 1 }, { unique: true });
   }
 
-  public create(entity: ICustomer): ICustomer | undefined {
-    const newId = this.getNewIndex();
-    this.database.set(newId, entity);
-    return this.database.get(newId);
+  public async create(entity: ICustomer) {
+    return await this.collection.insertOne(entity);
   }
 
-  public read(id: number): undefined | ICustomer {
-    return this.database.get(id);
+  public async read(id: number) {
+    return await this.collection.findOne({ _id: id });
   }
 
-  public readAll(): IVariableDatabase {
-    return this.database;
+  public async readAll() {
+    return await this.collection.find().toArray();
   }
 
-  public update(id: number, newEntity: ICustomer): ICustomer | undefined {
-    this.database.set(id, newEntity);
-    return this.database.get(id);
+  public async update(id: number, newEntity: ICustomer) {
+    return await this.collection.updateOne({ _id: id }, newEntity);
   }
 
-  public delete(id: number): boolean {
-    return this.database.delete(id);
+  public async delete(id: number) {
+    return await this.collection.deleteOne({ _id: id });
   }
 }

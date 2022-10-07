@@ -1,4 +1,5 @@
-import { IEndPointsRepository, IVariableDatabase } from '../repository';
+import { Document, InsertOneResult, UpdateResult } from 'mongodb';
+import { IEndPointsRepository } from '../repository';
 
 export interface ICustomer {
   full_name: string;
@@ -16,8 +17,6 @@ export interface ICustomer {
 }
 
 export interface IRepositoryCustomer extends IEndPointsRepository {
-  create(entity: ICustomer): ICustomer | undefined;
-  read(id: number): undefined | ICustomer;
-  readAll(): IVariableDatabase;
-  update(id: number, newEntity: ICustomer): ICustomer | undefined;
+  create(entity: ICustomer): Promise<InsertOneResult<Document>>;
+  update(id: number, newEntity: ICustomer): Promise<UpdateResult>;
 }

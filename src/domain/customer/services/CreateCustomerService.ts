@@ -16,8 +16,8 @@ export default class CreateCustomerService implements ICreateCustomerService {
   ) {}
 
   public async create(user: ICustomer): Promise<ICustomer> {
-    await this.validator.validate(user, this.repository.readAll());
-    this.repository.create(user);
+    await this.validator.validate(user);
+    await this.repository.create(user);
     return user;
   }
 }

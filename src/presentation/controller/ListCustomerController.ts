@@ -11,13 +11,13 @@ export default class ListCustomerController implements IEndPointsController {
     @inject(tokens.ListCustomerService) private service: IListCustomerService,
   ) {}
 
-  public handle(
+  public async handle(
     req: Request,
     res: Response,
     next: NextFunction,
-  ): Response | undefined {
+  ): Promise<Response | undefined> {
     try {
-      const info = this.service.readAll();
+      const info = await this.service.readAll();
       return res.json({ message: info }).status(200);
     } catch (error) {
       next(new StatusError(500, `${error}`));

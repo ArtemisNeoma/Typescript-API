@@ -1,3 +1,4 @@
+import { Document, WithId } from 'mongodb';
 import { ICustomer } from '../repository';
 
 export interface IDatabaseObject {
@@ -9,5 +10,5 @@ export interface ICreateCustomerService {
 }
 
 export interface IListCustomerService {
-  readAll(): IDatabaseObject;
+  readAll(): Promise<{ [x: number]: WithId<Document> }>;
 }

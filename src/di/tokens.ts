@@ -12,6 +12,7 @@ export const tokens = {
   ListCustomerService: Symbol('ListCustomerService'),
   DocsService: Symbol('DocsService'),
   CustomerRepository: Symbol('CustomerRepository'),
+  DatabaseClient: Symbol('DatabaseClient'),
   CustomerValidator: Symbol('CustomerValidator'),
   getCep: Symbol('getCep'),
   isCpfValid: Symbol('isCpfValid'),
