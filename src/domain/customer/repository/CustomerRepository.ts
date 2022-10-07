@@ -35,7 +35,7 @@ export default class CustomerRepository implements IRepositoryCustomer {
     return await this.collection.updateOne({ _id }, update);
   }
 
-  public async delete(id: ObjectId) {
-    return await this.collection.deleteOne({ _id: id });
+  public async delete(_id: ObjectId) {
+    return await this.collection.deleteOne({ _id });
   }
 }
