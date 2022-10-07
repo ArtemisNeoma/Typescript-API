@@ -23,8 +23,8 @@ export default class CustomerRepository implements IRepositoryCustomer {
     return await this.collection.insertOne(entity);
   }
 
-  public async read(id: ObjectId) {
-    return await this.collection.findOne({ _id: id });
+  public async read(_id: ObjectId) {
+    return await this.collection.findOne({ _id });
   }
 
   public async readAll() {
