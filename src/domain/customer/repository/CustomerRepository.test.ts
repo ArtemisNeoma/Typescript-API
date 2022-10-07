@@ -43,6 +43,7 @@ describe('CustomerRepository', () => {
       const { insertedId } = await userRepository.create(mockCustomer);
       expect(await userRepository.read(insertedId)).toEqual(mockCustomer);
     });
+
     it('Should return null when getting an absent index', async () => {
       expect(await userRepository.read(new ObjectId('aaaaaaaaaaaa'))).toEqual(
         null,
@@ -53,6 +54,7 @@ describe('CustomerRepository', () => {
     it("Should return empty array when userRepository's database is empty", async () => {
       expect(await userRepository.readAll()).toEqual([]);
     });
+
     it('Should return array of customers when database has customers', async () => {
       await userRepository.create(mockDatabaseArr[0]);
       await userRepository.create(mockDatabaseArr[1]);
@@ -84,6 +86,7 @@ describe('CustomerRepository', () => {
       expect(acknowledged).toBe(true);
       expect(deletedCount).toBe(1);
     });
+
     it("Should return a deletedCount of 0 when deleting an entry that doesn't exists", async () => {
       const { acknowledged, deletedCount } = await userRepository.delete(
         new ObjectId('aaaaaaaaaaaa'),

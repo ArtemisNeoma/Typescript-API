@@ -28,6 +28,7 @@ describe('ListCustomerService', () => {
         1: mockEntry,
       });
     });
+
     it('Should throw error when CustomerRepository fails', async () => {
       spyRepository.mockRejectedValue(new Error());
       try {
