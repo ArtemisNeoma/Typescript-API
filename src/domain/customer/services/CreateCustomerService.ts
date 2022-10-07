@@ -18,6 +18,6 @@ export default class CreateCustomerService implements ICreateCustomerService {
 
   public async create(user: ICustomer): Promise<InsertOneResult<Document>> {
     await this.validator.validate(user);
-    return await this.repository.create(user);
+    return this.repository.create(user);
   }
 }
