@@ -117,7 +117,6 @@ components:
         birthdate:
           type: string
           format: date-time
-          maxLength: now
         email_sms:
           type: boolean
           example: false
