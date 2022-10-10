@@ -6,6 +6,7 @@
 import { pathsToModuleNameMapper } from 'ts-jest';
 import { compilerOptions } from './tsconfig.json';
 
+const jestMongoDbPreset = require('@shelf/jest-mongodb/jest-preset');
 export default {
   // All imported modules in your tests should be mocked automatically
   automock: false,
@@ -106,6 +107,7 @@ export default {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
+  ...jestMongoDbPreset,
   preset: 'ts-jest',
 
   // Run tests from one or more projects

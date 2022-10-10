@@ -12,25 +12,34 @@ import {
   mPCodeInvalidCustomer,
 } from './mocks/CustomerRouter.mock';
 import { ICustomer } from '@interfaces/domain/customer/repository';
+import { Document, InsertOneResult, ObjectId } from 'mongodb';
+import container from '@di/index';
+import { IDatabaseClient } from '@interfaces/infrastructure';
+import { tokens } from '@di/tokens';
 
-const spyRepository = {
-  readAll: jest.spyOn(CustomerRepository.prototype, 'readAll'),
-  create: jest.spyOn(CustomerRepository.prototype, 'create'),
-};
+const mongoClient = container.resolve<IDatabaseClient>(tokens.DatabaseClient);
+const customerCollection = mongoClient.getInstance().collection('Customer');
 
-beforeEach(() => {
-  spyRepository.readAll.mockReset();
-  spyRepository.create.mockClear();
-  spyRepository.readAll.mockImplementation(() => {
-    return mockDatabase;
-  });
+const spyRepositoryReadAll = jest.spyOn(
+  CustomerRepository.prototype,
+  'readAll',
+);
+
+beforeEach(async () => {
+  await mongoClient.getInstance().collection('Customer').deleteMany({});
+});
+
+afterAll(async () => {
+  await mongoClient.close();
 });
 
 describe('Route /customer', () => {
   describe('GET /customer', () => {
+    const id = new ObjectId('aaaaaaaaaaaa');
     const expectedResults: Record<string, object | string> = {
       listJson: {
         0: {
+          _id: mockValidCustomer._id !== undefined ? mockValidCustomer._id : '',
           email: mEmailRepeatedCustomer.email,
           cpf: mCpfRepeatedCustomer.cpf,
         },
@@ -39,8 +48,10 @@ describe('Route /customer', () => {
     };
 
     it('Should return all customers when reading works correctly', async () => {
-      spyRepository.readAll.mockImplementation(() => {
-        return mockDatabase;
+      await customerCollection.insertOne({
+        _id: id,
+        email: mEmailRepeatedCustomer.email,
+        cpf: mCpfRepeatedCustomer.cpf,
       });
       const res = await request(app).get('/customer');
       expect(res).not.toBeUndefined();
@@ -49,9 +60,7 @@ describe('Route /customer', () => {
     });
 
     it('Should return reading error when readAll fails', async () => {
-      spyRepository.readAll.mockImplementationOnce(() => {
-        throw new Error('');
-      });
+      spyRepositoryReadAll.mockRejectedValue(new Error());
       const res = await request(app).get('/customer');
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(500);
@@ -60,12 +69,12 @@ describe('Route /customer', () => {
   });
 
   describe('POST /customer', () => {
-    const expectedResults: Record<string, ICustomer | string> = {
+    const expectedResults: Record<string, string | object> = {
       newCustomer: {
         ...mockValidCustomer,
         cpf: '12345678909',
         cellphone: '47991234567',
-        birthdate: '2000-01-01T00:00:00.000Z',
+        birthdate: new Date('2000-01-01'),
         postal_code: '89010203',
       },
       repeatedCpf: '19087282052',
@@ -90,44 +99,43 @@ describe('Route /customer', () => {
       'full_name',
     ];
 
-    spyRepository.readAll.mockImplementation(() => {
-      return mockDatabase;
-    });
-
     it('Should respond with sanitized user json when creating valid user', async () => {
-      spyRepository.create.mockImplementation(() => mockValidCustomer);
       const res = await request(app).post('/customer').send(mockValidCustomer);
+      const insertedId: string = res.body.message.insertedId;
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(201);
-      expect(res.body.message).toEqual(expectedResults.newCustomer);
+      expect(await customerCollection.findOne({ _id: insertedId })).toEqual(
+        expectedResults.newCustomer,
+      );
     });
 
     it('Should respond with error when cpf already exists', async () => {
-      spyRepository.create.mockImplementation(() => mCpfRepeatedCustomer);
+      await customerCollection.insertOne({ cpf: mCpfRepeatedCustomer.cpf });
       const res = await request(app)
         .post('/customer')
         .send(mCpfRepeatedCustomer);
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(422);
       expect(res.body.error).toEqual(
-        `Error: CPF ${expectedResults.repeatedCpf} already exists`,
+        `MongoServerError: E11000 duplicate key error collection: typescript_api.Customer index: cpf_1 dup key: { cpf: \"${expectedResults.repeatedCpf}" }`,
       );
     });
 
     it('Should respond with error when email already exists', async () => {
-      spyRepository.create.mockImplementation(() => mEmailRepeatedCustomer);
+      await customerCollection.insertOne({
+        email: mEmailRepeatedCustomer.email,
+      });
       const res = await request(app)
         .post('/customer')
         .send(mEmailRepeatedCustomer);
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(422);
       expect(res.body.error).toEqual(
-        `Error: Email ${expectedResults.repeatedEmail} already exists`,
+        `MongoServerError: E11000 duplicate key error collection: typescript_api.Customer index: email_1 dup key: { email: \"${expectedResults.repeatedEmail}" }`,
       );
     });
 
     it('Should respond with error when user cpf is composed only with one number', async () => {
-      spyRepository.create.mockImplementation(() => mCpfEqualCustomer);
       const res = await request(app).post('/customer').send(mCpfEqualCustomer);
       expect(res).not.toBeUndefined();
       expect(res.status).toBe(422);
@@ -137,7 +145,6 @@ describe('Route /customer', () => {
     });
 
     it('Should respond with error when user cpf is invalid', async () => {
-      spyRepository.create.mockImplementation(() => mCpfInvalidCustomer);
       const res = await request(app)
         .post('/customer')
         .send(mCpfInvalidCustomer);
@@ -149,7 +156,6 @@ describe('Route /customer', () => {
     });
 
     it('Should respond with error when user postal code is invalid', async () => {
-      spyRepository.create.mockImplementation(() => mPCodeInvalidCustomer);
       jest.spyOn(axios, 'get').mockImplementation(() => Promise.reject());
       const res = await request(app)
         .post('/customer')
@@ -164,9 +170,6 @@ describe('Route /customer', () => {
     it.each(missingCases)(
       'Should respond with error when %p is missing in new user',
       async (firstParam) => {
-        jest
-          .spyOn(CustomerRepository.prototype, 'create')
-          .mockImplementation(() => mockValidCustomer);
         (mockValidCustomer[firstParam] as unknown) = undefined;
         const res = await request(app)
           .post('/customer')

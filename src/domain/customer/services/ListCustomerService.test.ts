@@ -1,34 +1,41 @@
 import container from '@di/index';
-import { IVariableDatabase } from '@interfaces/domain/repository';
-import { ICustomer } from '@interfaces/domain/customer/repository';
+import { tokens } from '@di/tokens';
+import { IListCustomerService } from '@interfaces/domain/customer/services/service';
+import { IDatabaseClient } from '@interfaces/infrastructure';
+import { Document, WithId } from 'mongodb';
 import CustomerRepository from '../repository/CustomerRepository';
-import ListCustomerService from './ListCustomerService';
 
-const mockCustomer = {} as ICustomer;
-const databaseMock: IVariableDatabase = new Map<number, ICustomer>().set(
-  0,
-  mockCustomer,
+const mongoClient = container.resolve<IDatabaseClient>(tokens.DatabaseClient);
+const listCustomerService = container.resolve<IListCustomerService>(
+  tokens.ListCustomerService,
 );
-const listCustomerService = container.resolve(ListCustomerService);
+const mockEntry = {} as WithId<Document>;
+const spyRepository = jest
+  .spyOn(CustomerRepository.prototype, 'readAll')
+  .mockResolvedValue([mockEntry, mockEntry]);
+beforeEach(async () => {
+  await mongoClient.getInstance().collection('Customer').deleteMany({});
+});
+afterAll(async () => {
+  await mongoClient.close();
+});
 
 describe('ListCustomerService', () => {
-  describe('listAll', () => {
-    it('Should return json of users when getting and converting works', () => {
-      jest
-        .spyOn(CustomerRepository.prototype, 'readAll')
-        .mockReturnValue(databaseMock);
-      expect(listCustomerService.readAll()).toEqual(
-        Object.fromEntries(databaseMock),
-      );
+  describe('readAll', () => {
+    it('Should return the all of customers array as an object when running readAll', async () => {
+      expect(await listCustomerService.readAll()).toEqual({
+        0: mockEntry,
+        1: mockEntry,
+      });
     });
 
-    it('Should throw error when CustomerRepository fails', () => {
-      jest
-        .spyOn(CustomerRepository.prototype, 'readAll')
-        .mockImplementation(() => {
-          throw new Error();
-        });
-      expect(() => listCustomerService.readAll()).toThrow();
+    it('Should throw error when CustomerRepository fails', async () => {
+      spyRepository.mockRejectedValue(new Error());
+      try {
+        await listCustomerService.readAll();
+      } catch (err) {
+        expect(err).toEqual(new Error('Failed to readAll database'));
+      }
     });
   });
 });

@@ -1,7 +1,14 @@
-import { Document, InsertOneResult, UpdateResult } from 'mongodb';
+import {
+  Document,
+  InsertOneResult,
+  ObjectId,
+  UpdateFilter,
+  UpdateResult,
+} from 'mongodb';
 import { IEndPointsRepository } from '../repository';
 
 export interface ICustomer {
+  _id?: ObjectId;
   full_name: string;
   email: string;
   email_confirmation: string;
@@ -18,5 +25,5 @@ export interface ICustomer {
 
 export interface IRepositoryCustomer extends IEndPointsRepository {
   create(entity: ICustomer): Promise<InsertOneResult<Document>>;
-  update(id: number, newEntity: ICustomer): Promise<UpdateResult>;
+  update(id: ObjectId, update: UpdateFilter<Document>): Promise<UpdateResult>;
 }
